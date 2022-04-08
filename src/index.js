@@ -1,23 +1,64 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+
 import App from "./App";
 import Register from "./component/Register";
 import Login from "./component/Login";
-import { createStore, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
 import reducers from "./reducers";
-import thunk from "redux-thunk";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from "./component/Header";
+import "./index.css";
+import QuizClass from "./component/QuizClass";
+import RequireAuth from "./component/RequireAuth";
+import SideMenu from "./component/admin/SideMenu";
+import AddClass from "./component/admin/AddClass";
+import AddSubjects from "./component/admin/AddSubjects";
+import AddChapters from "./component/admin/AddChapters";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <App />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <Header>
+              <Register />
+            </Header>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Header>
+              <Login />
+            </Header>
+          }
+        />
+        <Route
+          path="/class"
+          element={
+            <RequireAuth>
+              <QuizClass />
+            </RequireAuth>
+          }
+        />
+        <Route path="/admin/home" element={<SideMenu />} />
+        <Route path="/admin/classess" element={<AddClass />} />
+        <Route path="/admin/subjects" element={<AddSubjects />} />
+        <Route path="/admin/chapters" element={<AddChapters />} />
       </Routes>
     </BrowserRouter>
   </Provider>,
