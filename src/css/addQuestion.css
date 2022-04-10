@@ -1,0 +1,40 @@
+.questionContiner {
+    display: flex;
+    justify-content: center;
+    margin: 2em 0 2em 0;
+    background-color: white;
+}
+
+.listqcontainer{
+    background-color: #f0f8ff;
+    padding: 1em;
+    color: #848484;
+}
+
+.answerContiner {
+    display: flex;
+    margin: 2em 0 2em 0;
+    height: 10em;
+    width: auto;
+    justify-content: center;
+    background-color: white;
+}
+
+.qImgAns{
+    object-fit: contain;
+}
+
+.qImg {
+    height: 15em;
+    width: 25em;
+    object-fit: contain;
+}
+
+.trashIcons {
+    font-size: 2em;
+    margin: 8px;
+}
+
+.trashIcons:hover {
+    color: #0080f6;
+}

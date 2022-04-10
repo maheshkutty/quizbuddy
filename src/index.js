@@ -18,6 +18,7 @@ import SideMenu from "./component/admin/SideMenu";
 import AddClass from "./component/admin/AddClass";
 import AddSubjects from "./component/admin/AddSubjects";
 import AddChapters from "./component/admin/AddChapters";
+import AddQuestions from "./component/admin/AddQuestions";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
@@ -59,6 +60,7 @@ ReactDOM.render(
         <Route path="/admin/classess" element={<AddClass />} />
         <Route path="/admin/subjects" element={<AddSubjects />} />
         <Route path="/admin/chapters" element={<AddChapters />} />
+        <Route path="/admin/questions" element={<AddQuestions />} />
       </Routes>
     </BrowserRouter>
   </Provider>,

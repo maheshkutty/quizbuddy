@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTable } from "react-table";
 import {
   Button,
@@ -9,14 +9,21 @@ import {
   FormControl,
 } from "@mui/material";
 import { Modal } from "react-bootstrap";
+import { connect } from "react-redux";
 
 import SideMenu from "./SideMenu";
 import "../../css/table.css";
+import { getSubjectsAction } from "../../actions/SubjectsAction";
+import { getClassesAction } from "../../actions/ClassesAction";
 
 function AddChapters() {
   const [show, setShow] = useState(false);
   const [qclass, setQclass] = useState("");
   const [qSub, setqSub] = useState("");
+
+  // useEffect(() => {
+  //   if()
+  // }, [])
 
   const data = useMemo(
     () => [
@@ -148,5 +155,13 @@ function AddChapters() {
     </SideMenu>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    qsub: state.qsub,
+    qclass: state.qclass,
+    qchapters: state.qchapters
+  };
+};
 
 export default AddChapters;

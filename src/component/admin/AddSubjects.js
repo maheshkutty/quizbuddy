@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTable } from "react-table";
 import {
   Button,
@@ -9,38 +9,66 @@ import {
   FormControl,
 } from "@mui/material";
 import { Modal } from "react-bootstrap";
+import { connect } from "react-redux";
 
 import SideMenu from "./SideMenu";
 import "../../css/table.css";
+import { getSubjectsAction } from "../../actions/SubjectsAction";
+import { getClassesAction } from "../../actions/ClassesAction";
+import qbuddy from "../../api/qbuddy";
 
-function AddSubjects() {
+function AddSubjects(props) {
   const [show, setShow] = useState(false);
-  const [qclass, setQclass] = useState();
-  const data = useMemo(
-    () => [
-      { srno: "1", class: "11th", subject: "Maths" },
-      { srno: "2", class: "12th", subject: "Chemistry" },
-      { srno: "3", class: "12th", subject: "Maths" },
-    ],
-    []
-  );
+  const [qclass, setQclass] = useState(1);
+  const [qsub, setQsub] = useState("");
+
+  const data = useMemo(() => props.qsub.data, [props.qsub.data]);
   const columns = useMemo(
     () => [
       { Header: "Sr no.", accessor: "srno" },
-      { Header: "Class", accessor: "class" },
-      { Header: "Subjects", accessor: "subject" },
+      { Header: "Class", accessor: "Cid" },
+      { Header: "Subjects", accessor: "Subject" },
     ],
     []
   );
-
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
+  useEffect(() => {
+    if (props.qsub.data.length == 0) {
+      props.getSubjectsAction(1);
+    }
+    if (props.qclass.data.length == 0) {
+      props.getClassesAction();
+    }
+  }, []);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handelQclass = (event) => {
     setQclass(event.target.value);
   };
+
+  const handelQSub = (event) => {
+    setQsub(event.target.value);
+  };
+
+  const createSubject = async () => {
+    try {
+      let req = {
+        class_id: parseInt(qclass),
+        subject: qsub
+      };
+      let response = await qbuddy.post("/admin/create_subject", req);
+      response = response.data;
+      if (response.status == "success") {
+        props.getSubjectsAction();
+        handleClose();
+        setQsub("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <SideMenu>
@@ -60,11 +88,19 @@ function AddSubjects() {
                 onChange={handelQclass}
                 sx={{ marginBottom: 1 }}
               >
-                <MenuItem value="1">11th</MenuItem>
-                <MenuItem value="2">12th</MenuItem>
+                {props.qclass.data.map((item) => (
+                  <MenuItem value={item.Cid}>{item.Class}</MenuItem>
+                ))}
               </Select>
             </FormControl>
-            <TextField variant="outlined" fullWidth id="subjects" label="Subjects" />
+            <TextField
+              variant="outlined"
+              fullWidth
+              value={qsub}
+              id="subjects"
+              label="Subjects"
+              onChange={handelQSub}
+            />
           </div>
         </Modal.Body>
         <Modal.Footer>
@@ -80,7 +116,7 @@ function AddSubjects() {
             variant="outlined"
             className="m-1"
             color="success"
-            onClick={handleClose}
+            onClick={createSubject}
           >
             Save
           </Button>
@@ -128,4 +164,14 @@ function AddSubjects() {
   );
 }
 
-export default AddSubjects;
+const mapStateToProps = (state) => {
+  return {
+    qsub: state.qsub,
+    qclass: state.qclass,
+  };
+};
+
+export default connect(mapStateToProps, {
+  getSubjectsAction,
+  getClassesAction,
+})(AddSubjects);

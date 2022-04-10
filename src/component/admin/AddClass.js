@@ -1,24 +1,34 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTable } from "react-table";
 import { Button, TextField } from "@mui/material";
 import { Modal } from "react-bootstrap";
+import { connect } from "react-redux";
 
 import SideMenu from "./SideMenu";
 import "../../css/table.css";
+import { getClassesAction } from "../../actions/ClassesAction";
+import qbuddy from "../../api/qbuddy";
 
-function AddClass() {
+function AddClass(props) {
   const [show, setShow] = useState(false);
-  const data = useMemo(
-    () => [
-      { srno: "1", class: "11th" },
-      { srno: "2", class: "12th" },
-    ],
-    []
-  );
+  const [qclassForm, setQclassForm] = useState("");
+  useEffect(() => {
+    if (props.qclass.data.length == 0) {
+      props.getClassesAction();
+    }
+  }, []);
+
+  const data = useMemo(() => props.qclass.data, [props.qclass.data]);
   const columns = useMemo(
     () => [
       { Header: "Sr no.", accessor: "srno" },
-      { Header: "Class", accessor: "class" },
+      { Header: "Class", accessor: "Class" },
+      {
+        Header: "Action ",
+        Cell: ({cell}) => {
+          return <Button onClick={() => deleteClass(cell.row.original.Cid)}>Delete</Button>;
+        },
+      },
     ],
     []
   );
@@ -28,6 +38,38 @@ function AddClass() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handelChange = (event) => {
+    setQclassForm(event.target.value);
+  };
+
+  const createClass = async () => {
+    try {
+      let req = {
+        name: qclassForm,
+      };
+      let response = await qbuddy.post("/admin/create_class", req);
+      response = response.data;
+      if (response.status == "success") {
+        props.getClassesAction();
+        handleClose();
+        setQclassForm("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteClass = async (id) => {
+    let response = await qbuddy.delete(`/admin/delete_class/${id}`);
+      response = response.data;
+      console.log(response);
+      if (response.status == "success") {
+        props.getClassesAction();
+        handleClose();
+      }
+  }
+
   return (
     <SideMenu>
       <Modal show={show} onHide={handleClose}>
@@ -36,14 +78,31 @@ function AddClass() {
         </Modal.Header>
         <Modal.Body>
           <div className="col">
-            <TextField variant="outlined" id="class" label="Class" fullWidth />
+            <TextField
+              variant="outlined"
+              id="class"
+              value={qclassForm}
+              onChange={handelChange}
+              label="Class"
+              fullWidth
+            />
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="contained" className="m-1" color="error" onClick={handleClose}>
+          <Button
+            variant="contained"
+            className="m-1"
+            color="error"
+            onClick={handleClose}
+          >
             Close
           </Button>
-          <Button variant="outlined" className="m-1" color="success" onClick={handleClose}>
+          <Button
+            variant="outlined"
+            className="m-1"
+            color="success"
+            onClick={createClass}
+          >
             Save
           </Button>
         </Modal.Footer>
@@ -90,4 +149,10 @@ function AddClass() {
   );
 }
 
-export default AddClass;
+const mapStateToProps = (state) => {
+  return {
+    qclass: state.qclass,
+  };
+};
+
+export default connect(mapStateToProps, { getClassesAction })(AddClass);

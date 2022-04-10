@@ -1,4 +1,4 @@
-import React, { Children, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "react-bootstrap/Nav";
 import "./sidemenu.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

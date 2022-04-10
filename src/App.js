@@ -13,6 +13,8 @@ import {
   faBook,
   faClipboardQuestion,
   faFile,
+  faImage,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -22,7 +24,9 @@ library.add(
   faGraduationCap,
   faBook,
   faClipboardQuestion,
-  faFile
+  faFile,
+  faImage,
+  faTrash
 );
 
 function App() {
