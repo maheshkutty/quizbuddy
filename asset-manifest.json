@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/react-gh-pages/static/css/main.63d76ebe.css",
-    "main.js": "/react-gh-pages/static/js/main.38eccad6.js",
-    "index.html": "/react-gh-pages/index.html",
-    "main.63d76ebe.css.map": "/react-gh-pages/static/css/main.63d76ebe.css.map",
-    "main.38eccad6.js.map": "/react-gh-pages/static/js/main.38eccad6.js.map"
+    "main.css": "/quizbuddy/static/css/main.63d76ebe.css",
+    "main.js": "/quizbuddy/static/js/main.38eccad6.js",
+    "index.html": "/quizbuddy/index.html",
+    "main.63d76ebe.css.map": "/quizbuddy/static/css/main.63d76ebe.css.map",
+    "main.38eccad6.js.map": "/quizbuddy/static/js/main.38eccad6.js.map"
   },
   "entrypoints": [
     "static/css/main.63d76ebe.css",
