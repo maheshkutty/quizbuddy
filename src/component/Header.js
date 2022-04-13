@@ -19,9 +19,7 @@ function Header({ children }) {
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark main">
         <div className="container-fluid">
-          <a className="navbar-brand">
-            QuizBuddy
-          </a>
+          <a className="navbar-brand">QuizBuddy</a>
           <button
             className="navbar-toggler"
             type="button"
@@ -38,12 +36,10 @@ function Header({ children }) {
             id="navbarNavAltMarkup"
           >
             <div className="navbar-nav">
-              <a className="nav-link active" aria-current="page" >
+              <a className="nav-link active" aria-current="page">
                 Home
               </a>
-              <a className="nav-link">
-                About Us
-              </a>
+              <a className="nav-link">About Us</a>
               <div>
                 <Button
                   type="submit"
@@ -64,6 +60,18 @@ function Header({ children }) {
                   variant="contained"
                 >
                   Login
+                </Button>
+                <Button
+                  type="submit"
+                  sx={{
+                    marginLeft: 1,
+                    background: "#ffffff",
+                    color: "#ea5455",
+                  }}
+                  onClick={() => navigate("/admin/home")}
+                  variant="contained"
+                >
+                  Admin
                 </Button>
               </div>
             </div>

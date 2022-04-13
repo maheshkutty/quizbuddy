@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import SideMenu from "./SideMenu";
 import {
   Button,
@@ -10,12 +10,15 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { connect } from "react-redux";
 import { Editor } from "@tinymce/tinymce-react";
 import { Modal } from "react-bootstrap";
 import DragAndDropFile from "../admin/DragDropFile";
 import "../../css/addQuestion.css";
+import { getClassesAction } from "../../actions/ClassesAction";
+import { getSubjectsAction } from "../../actions/SubjectsAction";
 
-function AddQuestions() {
+function AddQuestions(props) {
   const inputFile = useRef(null);
   const [show, setShow] = useState(false);
   const [qclass, setQclass] = useState("");
@@ -40,9 +43,28 @@ function AddQuestions() {
       ],
     },
   ]);
+  const [qsubList, setQsubList] = useState([]);
+
+  const createDataTable = useCallback(() => {
+    if (props.qsub.data.length === 0) {
+      props.getSubjectsAction(1);
+    }
+    if (props.qclass.data.length === 0) {
+      props.getClassesAction();
+    }
+  }, []);
+
+  useEffect(() => {
+    createDataTable();
+  }, [createDataTable]);
 
   const handelQclass = (event) => {
     setQclass(event.target.value);
+    let tempData = props.qsub.data.filter(
+      (item) => item.Cid == event.target.value
+    );
+    console.log(tempData);
+    setQsubList([...tempData]);
   };
 
   const handelqSub = (event) => {
@@ -152,106 +174,157 @@ function AddQuestions() {
   const buildAnswerDiv = () => {
     return noOfQuestion.map((item, i) => {
       return (
-        <div key={i} className="listqcontainer">
-          <div className="d-flex p-2 pb-4 justify-content-between">
-            <p>Multiple Choice Question : {i+1}</p>
-            <FontAwesomeIcon
-              icon="fa-trash"
-              fontSize="30px"
-              onClick={() => deleteQuestion(i)}
-            />
-          </div>
+        <>
           <div className="col">
-            <input
-              type="file"
-              id="file"
-              onChange={(e) => {
-                fileSubmitHandel(e, i);
-              }}
-              ref={inputFile}
-              style={{ display: "none" }}
-            />
-            {item.fileImg == "" ? null : (
-              <div className="questionContiner">
-                <img src={item.fileImg} className="qImg" />
-                <FontAwesomeIcon icon="fa-trash" className="trashIcons" />
-              </div>
-            )}
-            <TextField
-              label="Question"
-              fullWidth
-              value={item.name}
-              onChange={(e) => {
-                let t = noOfQuestion;
-                noOfQuestion[i].name = e.target.value;
-                setnoOfQuestion([...t]);
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <FontAwesomeIcon
-                      onClick={askPicture}
-                      icon="fa-image"
-                      fontSize="30px"
-                    />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{ marginBottom: 2 }}
-            />
-            <div className="d-flex flex-row flex-wrap justify-content-around">
-              {item.options.map((item, ansIndex) => (
-                <div className="col-6 p-1">
-                  <input
-                    type="file"
-                    id={`file_ans_${i}_${ansIndex}`}
-                    onChange={(e) => {
-                      fileSubmitAnsHandel(e, i, ansIndex);
-                    }}
-                    style={{ display: "none" }}
-                  />
-                  {item.fileImg == "" ? null : (
-                    <div className="answerContiner col">
-                      <img src={item.fileImg} className="qImgAns" />
-                      <FontAwesomeIcon icon="fa-trash" className="trashIcons" />
-                    </div>
-                  )}
-                  <TextField
-                    label="Answers"
-                    fullWidth
-                    value={noOfQuestion[i].options[ansIndex].value}
-                    onChange={(e) => addAnswers(i, ansIndex, e)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <FontAwesomeIcon
-                            icon="fa-image"
-                            fontSize="30px"
-                            onClick={() =>
-                              document
-                                .getElementById(`file_ans_${i}_${ansIndex}`)
-                                .click()
-                            }
-                          />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="start">
-                          <FontAwesomeIcon
-                            icon="fa-trash"
-                            fontSize="25px"
-                            opacity="0.8"
-                            onClick={() => deleteAnswer(i, ansIndex)}
-                          />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+            <FormControl fullWidth>
+              <InputLabel id="classlabel">Classess</InputLabel>
+              <Select
+                id="class"
+                labelId="classlabel"
+                label="Classess"
+                value={qclass}
+                onChange={handelQclass}
+                sx={{ marginBottom: 1 }}
+              >
+                {props.qclass.data.map((item) => (
+                  <MenuItem value={item.Cid}>{item.Class}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="subject">Subjects</InputLabel>
+              <Select
+                id="subject"
+                labelId="subjectlabel"
+                label="Subjects"
+                value={qSub}
+                onChange={handelqSub}
+                sx={{ marginBottom: 1 }}
+              >
+                {qsubList.map((item) => (
+                  <MenuItem value={item.Sid}>{item.Subject}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="chapters">Chapters</InputLabel>
+              <Select
+                id="chapters"
+                labelId="chapterslabel"
+                label="Chapters"
+                value={qChapters}
+                onChange={handelqChapters}
+                sx={{ marginBottom: 1 }}
+              >
+                <MenuItem value="1">Calculus</MenuItem>
+                <MenuItem value="2">Chemistry</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div key={i} className="listqcontainer">
+            <div className="d-flex p-2 pb-4 justify-content-between">
+              <p>Multiple Choice Question : {i + 1}</p>
+              <FontAwesomeIcon
+                icon="fa-trash"
+                fontSize="30px"
+                onClick={() => deleteQuestion(i)}
+              />
+            </div>
+            <div className="col">
+              <input
+                type="file"
+                id="file"
+                onChange={(e) => {
+                  fileSubmitHandel(e, i);
+                }}
+                ref={inputFile}
+                style={{ display: "none" }}
+              />
+              {item.fileImg == "" ? null : (
+                <div className="questionContiner">
+                  <img src={item.fileImg} className="qImg" />
+                  <FontAwesomeIcon icon="fa-trash" className="trashIcons" />
                 </div>
-              ))}
+              )}
+              <TextField
+                label="Question"
+                fullWidth
+                value={item.name}
+                onChange={(e) => {
+                  let t = noOfQuestion;
+                  noOfQuestion[i].name = e.target.value;
+                  setnoOfQuestion([...t]);
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FontAwesomeIcon
+                        onClick={askPicture}
+                        icon="fa-image"
+                        fontSize="30px"
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ marginBottom: 2 }}
+              />
+              <div className="d-flex flex-row flex-wrap justify-content-around">
+                {item.options.map((item, ansIndex) => (
+                  <div className="col-6 p-1">
+                    <input
+                      type="file"
+                      id={`file_ans_${i}_${ansIndex}`}
+                      onChange={(e) => {
+                        fileSubmitAnsHandel(e, i, ansIndex);
+                      }}
+                      style={{ display: "none" }}
+                    />
+                    {item.fileImg == "" ? null : (
+                      <div className="answerContiner col">
+                        <img src={item.fileImg} className="qImgAns" />
+                        <FontAwesomeIcon
+                          icon="fa-trash"
+                          className="trashIcons"
+                        />
+                      </div>
+                    )}
+                    <TextField
+                      label="Answers"
+                      fullWidth
+                      value={noOfQuestion[i].options[ansIndex].value}
+                      onChange={(e) => addAnswers(i, ansIndex, e)}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <FontAwesomeIcon
+                              icon="fa-image"
+                              fontSize="30px"
+                              onClick={() =>
+                                document
+                                  .getElementById(`file_ans_${i}_${ansIndex}`)
+                                  .click()
+                              }
+                            />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="start">
+                            <FontAwesomeIcon
+                              icon="fa-trash"
+                              fontSize="25px"
+                              opacity="0.8"
+                              onClick={() => deleteAnswer(i, ansIndex)}
+                            />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </>
       );
     });
   };
@@ -272,4 +345,14 @@ function AddQuestions() {
   );
 }
 
-export default AddQuestions;
+const mapStateToProps = (state) => {
+  return {
+    qsub: state.qsub,
+    qclass: state.qclass,
+  };
+};
+
+export default connect(mapStateToProps, {
+  getClassesAction,
+  getSubjectsAction,
+})(AddQuestions);

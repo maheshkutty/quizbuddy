@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { useTable } from "react-table";
 import {
   Button,
@@ -35,17 +35,18 @@ function AddSubjects(props) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
-  useEffect(() => {
-    function createDataTable() {
-      if (props.qsub.data.length === 0) {
-        props.getSubjectsAction(1);
-      }
-      if (props.qclass.data.length === 0) {
-        props.getClassesAction();
-      }
+  const createDataTable = useCallback(() => {
+    if (props.qsub.data.length === 0) {
+      props.getSubjectsAction(1);
     }
-    createDataTable();
+    if (props.qclass.data.length === 0) {
+      props.getClassesAction();
+    }
   }, []);
+
+  useEffect(() => {
+    createDataTable();
+  }, [createDataTable]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
