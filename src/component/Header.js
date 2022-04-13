@@ -19,7 +19,7 @@ function Header({ children }) {
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark main">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand">
             QuizBuddy
           </a>
           <button
@@ -38,10 +38,10 @@ function Header({ children }) {
             id="navbarNavAltMarkup"
           >
             <div className="navbar-nav">
-              <a className="nav-link active" aria-current="page" href="#">
+              <a className="nav-link active" aria-current="page" >
                 Home
               </a>
-              <a className="nav-link" href="#">
+              <a className="nav-link">
                 About Us
               </a>
               <div>

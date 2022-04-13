@@ -26,7 +26,8 @@ function AddSubjects(props) {
   const columns = useMemo(
     () => [
       { Header: "Sr no.", accessor: "srno" },
-      { Header: "Class", accessor: "Cid" },
+      // { Header: "Class ID", accessor: "Cid" },
+      { Header: "Class", accessor: "Class" },
       { Header: "Subjects", accessor: "Subject" },
     ],
     []
@@ -35,13 +36,17 @@ function AddSubjects(props) {
     useTable({ columns, data });
 
   useEffect(() => {
-    if (props.qsub.data.length == 0) {
-      props.getSubjectsAction(1);
+    function createDataTable() {
+      if (props.qsub.data.length === 0) {
+        props.getSubjectsAction(1);
+      }
+      if (props.qclass.data.length === 0) {
+        props.getClassesAction();
+      }
     }
-    if (props.qclass.data.length == 0) {
-      props.getClassesAction();
-    }
+    createDataTable();
   }, []);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handelQclass = (event) => {
@@ -56,11 +61,11 @@ function AddSubjects(props) {
     try {
       let req = {
         class_id: parseInt(qclass),
-        subject: qsub
+        subject: qsub,
       };
       let response = await qbuddy.post("/admin/create_subject", req);
       response = response.data;
-      if (response.status == "success") {
+      if (response.status === "success") {
         props.getSubjectsAction();
         handleClose();
         setQsub("");
@@ -68,7 +73,7 @@ function AddSubjects(props) {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <SideMenu>

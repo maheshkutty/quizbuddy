@@ -1,8 +1,7 @@
 {
   "name": "quizbuddy",
+  "homepage": ".",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://maheshkutty.github.io/quizbuddy",
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -35,8 +34,6 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
