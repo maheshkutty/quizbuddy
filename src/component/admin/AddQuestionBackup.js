@@ -1,198 +1,231 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import SideMenu from "./SideMenu";
 import {
   Button,
-  TextField,
   Select,
   MenuItem,
   InputLabel,
   FormControl,
-  InputAdornment,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Editor } from "@tinymce/tinymce-react";
-import { Modal } from "react-bootstrap";
-import DragAndDropFile from "../admin/DragDropFile";
+import { connect } from "react-redux";
 import "../../css/addQuestion.css";
+import { getClassesAction } from "../../actions/ClassesAction";
+import { getSubjectsAction } from "../../actions/SubjectsAction";
+import qbuddy from "../../api/qbuddy";
+import QuizTab from "./QuizTab";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-function AddQuestions() {
-  const inputFile = useRef(null);
+const schema = yup.object({
+  name: yup.string().required("Name is required"),
+  address: yup.string().required("Address is required"),
+  phone: yup.string().required(),
+  email: yup.string().email("Enter Valid Email").required(),
+  password: yup.string().required(),
+});
+
+function AddQuestions(props) {
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      qclass: "",
+      qSub: "",
+      qChapter: "",
+    },
+    resolver: yupResolver(schema),
+  });
+
   const [show, setShow] = useState(false);
   const [qclass, setQclass] = useState("");
-  const [qSub, setqSub] = useState("");
-  const [qChapters, setqChapters] = useState("");
-  const [fileImg, setFileImg] = useState("");
+  const [qSub, setqSub] = useState(1);
+  const [qChapter, setqChapter] = useState("");
+
   const [noOfQuestion, setnoOfQuestion] = useState([
     {
       name: "",
       fileImg: "",
+      diff_lvl: 0,
       options: [
         {
+          id: "1",
           type: "text",
           value: "",
+          fileImg: "",
+        },
+        {
+          id: "2",
+          type: "text",
+          value: "",
+          fileImg: "",
         },
       ],
     },
   ]);
 
+  const [qChaptersList, setQChaptersList] = useState([]);
+  const [qsubList, setQsubList] = useState([]);
+
+  const createDataTable = useCallback(() => {
+    if (props.qsub.data.length === 0) {
+      props.getSubjectsAction(1);
+    }
+    if (props.qclass.data.length === 0) {
+      props.getClassesAction();
+    }
+  }, []);
+
+  useEffect(() => {
+    createDataTable();
+  }, [createDataTable]);
+
   const handelQclass = (event) => {
     setQclass(event.target.value);
+    let tempData = props.qsub.data.filter(
+      (item) => item.Cid == event.target.value
+    );
+    setqSub("");
+    setqChapter("");
+    setQChaptersList([]);
+    setQsubList([...tempData]);
   };
 
   const handelqSub = (event) => {
     setqSub(event.target.value);
+    getChaptersList(event.target.value);
   };
 
-  const handelqChapters = (event) => {
-    setqChapters(event.target.value);
+  const handelqChapter = (event) => {
+    setqChapter(event.target.value);
   };
-  const askPicture = () => {
-    inputFile.current.click();
+
+  const getChaptersList = async (sid) => {
+    if (sid != "") {
+      let res = await qbuddy.get(`/admin/subject/${sid}/chapters`);
+      res = res.data.res;
+      setQChaptersList([...res]);
+    }
   };
+
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  const buildAnswerDiv = () => {};
+  const checkQOption = (options) => {
+    let result = true;
+    if (options.length >= 2) {
+      for (let i = 0; i < 2; i++) {
+        if (options[i].value == "" && options[i].fileImg == "") {
+          result = false;
+          break;
+        }
+      }
+    } else {
+      result = false;
+    }
+    return result;
+  };
+
+  const saveQuiz = () => {
+    let questionPayload = {};
+    let isQuestionExist = noOfQuestion[0].name != "" ? true : false;
+    let isOptionExist = checkQOption(noOfQuestion[0].options);
+    if (isQuestionExist && isOptionExist) {
+      questionPayload.classid = qclass;
+      questionPayload.sub_id = qSub;
+      questionPayload.chap_id = qChapter;
+      questionPayload.questions = noOfQuestion
+        .filter(
+          (q) => (q.name != "" || q.fileImg != "") && checkQOption(q.options)
+        )
+        .map((q) => ({
+          question: q.name,
+          q_type: "multi",
+          diff_lvl: "1",
+          ans_id: [1],
+          options: q.options.filter((option) => option.value != ""),
+        }));
+      console.log(questionPayload);
+    }
+  };
 
   return (
     <SideMenu>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Class</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div></div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="contained"
-            className="m-1"
-            color="error"
-            onClick={handleClose}
-          >
-            Close
-          </Button>
-          <Button
-            variant="outlined"
-            className="m-1"
-            color="success"
-            onClick={handleClose}
-          >
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
       <div className="col m-2">
-        <h1>Hello World</h1>
-        <Button varient="outlined" onClick={handleShow}>
-          Show
-        </Button>
-        <div className="col">
-          <input
-            type="file"
-            id="file"
-            onChange={(e) => {
-              var reader = new FileReader();
-              reader.readAsDataURL(e.target.files[0]);
-              reader.onload = function () {
-                setFileImg(reader.result);
-                console.log(reader.result);
-              };
-              reader.onerror = function (error) {
-                console.log("Error: ", error);
-              };
-            }}
-            ref={inputFile}
-            style={{ display: "none" }}
-          />
-          <FormControl fullWidth>
-            <InputLabel id="classlabel">Classess</InputLabel>
-            <Select
-              id="class"
-              labelId="classlabel"
-              label="Classess"
-              value={qclass}
-              onChange={handelQclass}
-              sx={{ marginBottom: 1 }}
-            >
-              <MenuItem value="1">11th</MenuItem>
-              <MenuItem value="2">12th</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="subject">Subjects</InputLabel>
-            <Select
-              id="subject"
-              labelId="subjectlabel"
-              label="Subjects"
-              value={qSub}
-              onChange={handelqSub}
-              sx={{ marginBottom: 1 }}
-            >
-              <MenuItem value="1">Maths</MenuItem>
-              <MenuItem value="2">Chemistry</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="chapters">Chapters</InputLabel>
-            <Select
-              id="chapters"
-              labelId="chapterslabel"
-              label="Chapters"
-              value={qChapters}
-              onChange={handelqChapters}
-              sx={{ marginBottom: 1 }}
-            >
-              <MenuItem value="1">Calculus</MenuItem>
-              <MenuItem value="2">Chemistry</MenuItem>
-            </Select>
-          </FormControl>
+        <div className="d-flex flex-wrap">
+          <div className="col-6 p-2">
+            <FormControl fullWidth>
+              <InputLabel id="classlabel">Classess</InputLabel>
+              <Select
+                id="class"
+                labelId="classlabel"
+                label="Classess"
+                value={qclass}
+                onChange={handelQclass}
+                sx={{ marginBottom: 1 }}
+              >
+                {props.qclass.data.map((item) => (
+                  <MenuItem value={item.Cid}>{item.Class}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div className="col-6 p-2">
+            <FormControl fullWidth>
+              <InputLabel id="subject">Subjects</InputLabel>
+              <Select
+                id="subject"
+                labelId="subjectlabel"
+                label="Subjects"
+                value={qSub}
+                onChange={handelqSub}
+                sx={{ marginBottom: 1 }}
+              >
+                {qsubList.map((item) => (
+                  <MenuItem value={item.Sid}>{item.Subject}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div className="col-6 p-2">
+            <FormControl fullWidth>
+              <InputLabel id="chapters">Chapters</InputLabel>
+              <Select
+                id="chapters"
+                labelId="chapterslabel"
+                label="Chapters"
+                value={qChapter}
+                onChange={handelqChapter}
+                sx={{ marginBottom: 1 }}
+              >
+                {qChaptersList.map((item) => (
+                  <MenuItem value={item.CHid}>{item.Chapter}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
         </div>
-        <div className="col">
-          <div className="qinput">
+        <QuizTab
+          noOfQuestion={noOfQuestion}
+          setnoOfQuestion={setnoOfQuestion}
+        />
+        <div className="d-flex mt-2 justify-content-between">
+          <div className="col">
+            <Button variant="outlined">Reset Quiz</Button>
+          </div>
+          <div className="col-3 d-flex justify-content-between">
             <div>
-              {fileImg == "" ? null : (
-                <div className="answerContiner">
-                  <img src={fileImg} className="qImgAns" />
-                  <FontAwesomeIcon icon="fa-trash" className="trashIcons" />
-                </div>
-              )}
-              <TextField
-                label="Question"
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <FontAwesomeIcon
-                        onClick={askPicture}
-                        icon="fa-image"
-                        fontSize="30px"
-                      />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{ marginBottom: 2 }}
-              />
-              <div className="p-2">
-                <TextField
-                  label="Answers"
-                  fullWidth
-                  onClick={() => {
-                    console.log("hello");
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <FontAwesomeIcon icon="fa-image" fontSize="30px" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
+              <Button variant="outlined">Preview Quiz</Button>
             </div>
-            <Button variant="outlined" fullWidth>
-              Add Questions
-            </Button>
+            <div>
+              <Button variant="outlined" onClick={saveQuiz}>
+                Save Quiz
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -200,4 +233,14 @@ function AddQuestions() {
   );
 }
 
-export default AddQuestions;
+const mapStateToProps = (state) => {
+  return {
+    qsub: state.qsub,
+    qclass: state.qclass,
+  };
+};
+
+export default connect(mapStateToProps, {
+  getClassesAction,
+  getSubjectsAction,
+})(AddQuestions);

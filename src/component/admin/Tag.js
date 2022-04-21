@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useTable } from "react-table";
-import { Button, TextField, ThemeProvider } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as yup from "yup";
@@ -12,13 +12,12 @@ import "../../css/table.css";
 import { getClassesAction } from "../../actions/ClassesAction";
 import qbuddy from "../../api/qbuddy";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import QuizTheme from "../../theme/appTheme";
 
 const schema = yup.object({
   qclassForm: yup.string().required("Class name required !"),
 });
 
-function AddClass(props) {
+function Tag(props) {
   const {
     register,
     watch,
@@ -52,7 +51,7 @@ function AddClass(props) {
             <FontAwesomeIcon
               icon="fa-trash"
               fontSize="25px"
-              style={{ cursor: "pointer" }}
+              style={{cursor:"pointer"}}
               onClick={() => deleteClass(cell.row.original.Cid)}
             />
           );
@@ -137,13 +136,9 @@ function AddClass(props) {
       </Modal>
       <div className="col m-2" style={{ color: "#7b809a" }}>
         <h2 style={{ color: "#344767" }}>Classess</h2>
-        <div className="d-flex flex-row-reverse">
-          <ThemeProvider theme={QuizTheme}>
-            <Button variant="contained" color="dpink" onClick={handleShow}>
-              Add
-            </Button>
-          </ThemeProvider>
-        </div>
+        <Button variant="contained" onClick={handleShow}>
+          Add Class
+        </Button>
         <table {...getTableProps()} className="tableStyle">
           <thead className="tableHeaderStyle">
             {headerGroups.map((headerGroup) => (
@@ -187,4 +182,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { getClassesAction })(AddClass);
+export default connect(mapStateToProps, { getClassesAction })(Tag);

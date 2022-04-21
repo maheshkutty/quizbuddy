@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useTable } from "react-table";
 import {
   Button,
@@ -7,29 +7,68 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  FormHelperText,
 } from "@mui/material";
 import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import SideMenu from "./SideMenu";
 import "../../css/table.css";
 import { getSubjectsAction } from "../../actions/SubjectsAction";
 import { getClassesAction } from "../../actions/ClassesAction";
+import qbuddy from "../../api/qbuddy";
 
-function AddChapters() {
+const schema = yup.object({
+  qclass: yup.string().required("Select class !"),
+  qSub: yup.string().required("Select subject !"),
+  qChapter: yup.string().required("Chapter name required !"),
+});
+
+function AddChapters(props) {
   const [show, setShow] = useState(false);
-  const [qclass, setQclass] = useState("");
-  const [qSub, setqSub] = useState("");
 
-  // useEffect(() => {
-  //   if()
-  // }, [])
+  const {
+    register,
+    watch,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      qclass: "",
+      qSub: "",
+      qChapter: "",
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const createDataTable = useCallback(() => {
+    if (props.qsub.data.length === 0) {
+      props.getSubjectsAction();
+    }
+    if (props.qclass.data.length === 0) {
+      props.getClassesAction();
+    }
+  }, []);
+
+  useEffect(() => {
+    createDataTable();
+  }, [createDataTable]);
 
   const data = useMemo(
     () => [
-      { srno: "1", class: "11th", subject: "Maths", chapters:"Lines" },
-      { srno: "2", class: "12th", subject: "Chemistry", chapters:"Oragnic Chemistry" },
-      { srno: "3", class: "12th", subject: "Maths", chapters:"Calculus" },
+      { srno: "1", class: "11th", subject: "Maths", chapters: "Lines" },
+      {
+        srno: "2",
+        class: "12th",
+        subject: "Chemistry",
+        chapters: "Oragnic Chemistry",
+      },
+      { srno: "3", class: "12th", subject: "Maths", chapters: "Calculus" },
     ],
     []
   );
@@ -48,12 +87,31 @@ function AddChapters() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [qsubList, setQsubList] = useState([]);
+
   const handelQclass = (event) => {
-    setQclass(event.target.value);
+    let tempData = props.qsub.data.filter(
+      (item) => item.Cid == event.target.value
+    );
+    setQsubList([...tempData]);
   };
 
-  const handelqSub = (event) => {
-    setqSub(event.target.value);
+  const createChapter = async ({ qSub, qChapter }) => {
+    try {
+      let req = {
+        sub_id: qSub,
+        chapter: qChapter,
+      };
+      console.log(req);
+      let response = await qbuddy.post("/admin/create_chapter", req);
+      response = response.data;
+      console.log(response);
+      handleClose();
+      reset();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -62,57 +120,77 @@ function AddChapters() {
         <Modal.Header closeButton>
           <Modal.Title>Add Chapters</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <div className="col">
-            <FormControl fullWidth>
-              <InputLabel id="classlabel">Classess</InputLabel>
-              <Select
-                id="class"
-                labelId="classlabel"
-                label="Classess"
-                value={qclass}
-                onChange={handelQclass}
-                sx={{ marginBottom: 1 }}
-              >
-                <MenuItem value="1">11th</MenuItem>
-                <MenuItem value="2">12th</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl fullWidth>
-              <InputLabel id="subject">Subjects</InputLabel>
-              <Select
-                id="subject"
-                labelId="subjectlabel"
-                label="Subjects"
-                value={qSub}
-                onChange={handelqSub}
-                sx={{ marginBottom: 1 }}
-              >
-                <MenuItem value="1">Maths</MenuItem>
-                <MenuItem value="2">Chemistry</MenuItem>
-              </Select>
-              <TextField variant="outlined" fullWidth id="chapter" label="Chapter" />
-            </FormControl>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="contained"
-            className="m-1"
-            color="error"
-            onClick={handleClose}
-          >
-            Close
-          </Button>
-          <Button
-            variant="outlined"
-            className="m-1"
-            color="success"
-            onClick={handleClose}
-          >
-            Save
-          </Button>
-        </Modal.Footer>
+        <form onSubmit={handleSubmit(createChapter)}>
+          <Modal.Body>
+            <div className="col">
+              <FormControl fullWidth>
+                <InputLabel id="classlabel">Classess</InputLabel>
+                <Select
+                  id="class"
+                  labelId="classlabel"
+                  label="Classess"
+                  error={errors.qclass?.type == "required" ? true : false}
+                  {...register("qclass", {
+                    onBlur: handelQclass,
+                  })}
+                  sx={{ marginBottom: 1 }}
+                >
+                  {props.qclass.data.map((item) => (
+                    <MenuItem value={item.Cid}>{item.Class}</MenuItem>
+                  ))}
+                </Select>
+                {errors.qclass?.message ? (
+                  <FormHelperText error>{errors.qclass.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel id="subject">Subjects</InputLabel>
+                <Select
+                  id="subject"
+                  labelId="subjectlabel"
+                  label="Subjects"
+                  error={errors.qSub?.type == "required" ? true : false}
+                  {...register("qSub")}
+                  sx={{ marginBottom: 1 }}
+                >
+                  {qsubList.map((item) => (
+                    <MenuItem value={item.Sid}>{item.Subject}</MenuItem>
+                  ))}
+                </Select>
+                {errors.qSub?.message ? (
+                  <FormHelperText error>{errors.qSub.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+              <TextField
+                {...register("qChapter")}
+                variant="outlined"
+                fullWidth
+                id="chapter"
+                label="Chapter"
+                error={errors.qChapter?.type === "required" ? true : false}
+                helperText={errors.qChapter?.message}
+              />
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="contained"
+              className="m-1"
+              color="error"
+              onClick={handleClose}
+            >
+              Close
+            </Button>
+            <Button
+              variant="outlined"
+              className="m-1"
+              color="success"
+              type="submit"
+            >
+              Save
+            </Button>
+          </Modal.Footer>
+        </form>
       </Modal>
       <div className="col m-2" style={{ color: "#7b809a" }}>
         <h2 style={{ color: "#344767" }}>Chapters</h2>
@@ -160,8 +238,11 @@ const mapStateToProps = (state) => {
   return {
     qsub: state.qsub,
     qclass: state.qclass,
-    qchapters: state.qchapters
+    qchapters: state.qchapters,
   };
 };
 
-export default AddChapters;
+export default connect(mapStateToProps, {
+  getSubjectsAction,
+  getClassesAction,
+})(AddChapters);

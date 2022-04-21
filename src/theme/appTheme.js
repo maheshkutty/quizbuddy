@@ -11,7 +11,13 @@ const QuizTheme = createTheme({
     },
     neutral: {
       main: "#ea5455",
-      backgroundImage: "linear-gradient(to right bottom, #ea5455, #c1426c, #8c3e73, #563966, #2b2e4a)",
+      backgroundImage:
+        "linear-gradient(to right bottom, #ea5455, #c1426c, #8c3e73, #563966, #2b2e4a)",
+      contrastText: "#fff",
+    },
+    dpink: {
+      main: "#ec407a",
+      darker: "#880d36",
       contrastText: "#fff",
     },
   },

@@ -9,6 +9,9 @@ import {
   Select,
   InputLabel,
   MenuItem,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
 } from "@mui/material";
 
 const QuizTab = ({ noOfQuestion, setnoOfQuestion }) => {
@@ -62,6 +65,7 @@ const QuizTab = ({ noOfQuestion, setnoOfQuestion }) => {
         value: "",
         fileImg: "",
         id: opLength + 1,
+        isAns: false,
       });
       noOfQuestionT[i].options[ansIndex]["value"] = val.target.value;
     } else {
@@ -88,11 +92,13 @@ const QuizTab = ({ noOfQuestion, setnoOfQuestion }) => {
           type: "text",
           value: "",
           fileImg: "",
+          isAns: false,
         },
         {
           type: "text",
           value: "",
           fileImg: "",
+          isAns: false,
         },
       ],
     });
@@ -114,6 +120,13 @@ const QuizTab = ({ noOfQuestion, setnoOfQuestion }) => {
   const handleLevel = (e, i) => {
     let noOfQuestionT = noOfQuestion;
     noOfQuestionT[i].diff_lvl = e.target.value;
+    setnoOfQuestion([...noOfQuestionT]);
+  };
+
+  const checkAnswer = (i, ansIndex, e) => {
+    let noOfQuestionT = noOfQuestion;
+    noOfQuestionT[i].options[ansIndex].isAns =
+      !noOfQuestionT[i].options[ansIndex].isAns;
     setnoOfQuestion([...noOfQuestionT]);
   };
 
@@ -242,6 +255,17 @@ const QuizTab = ({ noOfQuestion, setnoOfQuestion }) => {
                         ),
                       }}
                     />
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={noOfQuestion[i].options[ansIndex].isAns}
+                            onChange={(e) => checkAnswer(i, ansIndex, e)}
+                          />
+                        }
+                        label="Correct Answer"
+                      />
+                    </FormGroup>
                   </div>
                 ))}
               </div>

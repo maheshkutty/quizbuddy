@@ -1,0 +1,2 @@
+GET https://2m0x0d.deta.dev/admin/classes/subjects/chapters HTTP/1.1
+Content-Type: application/json
