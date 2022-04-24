@@ -21,6 +21,13 @@ const QuizTheme = createTheme({
       contrastText: "#fff",
     },
   },
+  components: {
+    MuiListItemText: {
+      styleOverrides: {
+        root: { fontSize: "10rem", color:"green" },
+      },
+    },
+  },
 });
 
 export default QuizTheme;

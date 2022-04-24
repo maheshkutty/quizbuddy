@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { ListItemText, Button } from "@mui/material";
+import { ListItemText, Button, ListSubheader } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
@@ -31,26 +31,20 @@ function QuizCard(props) {
             }}
           />
           <Typography variant="h5">Personalized Quiz</Typography>
-          <List>
+          <Typography variant="list" >
             <ListItem sx={{ p: 0 }}>
-              <ListItemIcon >
-                <KeyboardArrowRightIcon />
-              </ListItemIcon>
+              <KeyboardArrowRightIcon />
               <ListItemText primary="Time: 90 mins" />
             </ListItem>
             <ListItem sx={{ p: 0 }}>
-              <ListItemIcon>
-                <KeyboardArrowRightIcon />
-              </ListItemIcon>
+              <KeyboardArrowRightIcon />
               <ListItemText primary="Dfficulty: Medium" />
             </ListItem>
             <ListItem sx={{ p: 0 }}>
-              <ListItemIcon>
-                <KeyboardArrowRightIcon />
-              </ListItemIcon>
+              <KeyboardArrowRightIcon />
               <ListItemText primary="Questions: 20" />
             </ListItem>
-          </List>
+          </Typography>
         </CardContent>
         <CardActions>
           <ThemeProvider theme={QuizTheme}>

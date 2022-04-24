@@ -19,6 +19,7 @@ import AddClass from "./component/admin/AddClass";
 import AddSubjects from "./component/admin/AddSubjects";
 import AddChapters from "./component/admin/AddChapters";
 import AddQuestions from "./component/admin/AddQuestions";
+import Dashboard from "./component/Dashboard";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
@@ -56,6 +57,7 @@ ReactDOM.render(
             </RequireAuth>
           }
         />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin/home" element={<SideMenu />} />
         <Route path="/admin/classess" element={<AddClass />} />
         <Route path="/admin/subjects" element={<AddSubjects />} />
