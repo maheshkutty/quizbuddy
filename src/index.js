@@ -19,6 +19,7 @@ import AddClass from "./component/admin/AddClass";
 import AddSubjects from "./component/admin/AddSubjects";
 import AddChapters from "./component/admin/AddChapters";
 import AddQuestions from "./component/admin/AddQuestions";
+import QuestionTable from "./component/admin/QuestionTable";
 import Dashboard from "./component/Dashboard";
 
 ReactDOM.render(
@@ -62,7 +63,8 @@ ReactDOM.render(
         <Route path="/admin/classess" element={<AddClass />} />
         <Route path="/admin/subjects" element={<AddSubjects />} />
         <Route path="/admin/chapters" element={<AddChapters />} />
-        <Route path="/admin/questions" element={<AddQuestions />} />
+        <Route path="/admin/questions" element={<QuestionTable />} />
+        <Route path="/admin/addquestions" element={<AddQuestions />} />
       </Routes>
     </BrowserRouter>
   </Provider>,

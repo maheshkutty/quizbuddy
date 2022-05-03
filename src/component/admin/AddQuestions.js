@@ -18,6 +18,10 @@ import QuizTab from "./QuizTab";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Modal } from "react-bootstrap";
+import DragAndDropFile from "./DragDropFile";
+import * as ExcelJS from "exceljs";
+import { Link } from "react-router-dom";
 
 const schema = yup.object({
   qclass: yup.string().required("Select class !"),
@@ -40,6 +44,86 @@ function AddQuestions(props) {
     },
     resolver: yupResolver(schema),
   });
+
+  async function createQuizJson(f) {
+    try {
+      const wb = new ExcelJS.Workbook();
+      let reader = new FileReader();
+      reader.readAsArrayBuffer(f);
+      reader.onload = () => {
+        const buffer = reader.result;
+        wb.xlsx.load(buffer).then(async (workbook) => {
+          let flag = 0;
+          let ws = workbook.getWorksheet(1);
+          let q = {};
+          ws.eachRow((row) => {
+            if (flag == 1) {
+              console.log(row.getCell(1).value.toString());
+              let y =
+                row.getCell(1).value.toString() +
+                row.getCell(2).value.toString() +
+                row.getCell(3).value.toString();
+              if (!(y in q)) {
+                q[y] = {
+                  classid: row.getCell(1).value,
+                  sub_id: row.getCell(2).value,
+                  chap_id: row.getCell(3).value,
+                  questions: [],
+                };
+              }
+              q[y].questions.push({
+                name: row.getCell(4).value,
+                q_type: "multi",
+                fileImg: "",
+                diff_lvl: row.getCell(10).value,
+                ans_id: [row.getCell(9).value],
+                options: [
+                  {
+                    id: 1,
+                    type: "text",
+                    value: row.getCell(5),
+                    isAns: false,
+                    fileImg: "",
+                  },
+                  {
+                    id: 2,
+                    type: "text",
+                    value: row.getCell(6),
+                    isAns: false,
+                    fileImg: "",
+                  },
+                  {
+                    id: 3,
+                    type: "text",
+                    value: row.getCell(7),
+                    isAns: false,
+                    fileImg: "",
+                  },
+                  {
+                    id: 4,
+                    type: "text",
+                    value: row.getCell(8),
+                    isAns: false,
+                    fileImg: "",
+                  },
+                ],
+              });
+              q[y].questions[q[y].questions.length - 1].options[
+                row.getCell(9).value - 1
+              ].isAns = true;
+            }
+            flag = 1;
+          });
+          q = Object.values(q);
+          console.log(q[0]);
+          setnoOfQuestion(q[0].questions);
+          handleClose();
+        });
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const [show, setShow] = useState(false);
 
@@ -153,6 +237,7 @@ function AddQuestions(props) {
   return (
     <SideMenu>
       <div className="col m-2">
+        <Link to="/admin/questions">  Back</Link>
         <form onSubmit={handleSubmit(saveQuiz)}>
           <div className="d-flex flex-wrap">
             <div className="col-6 p-2">
@@ -227,8 +312,45 @@ function AddQuestions(props) {
                 ) : null}
               </FormControl>
             </div>
+            <div>
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Upload Excel File</Modal.Title>
+                </Modal.Header>
+                <form>
+                  <Modal.Body>
+                    <DragAndDropFile processData={createQuizJson} />
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="contained"
+                      className="m-1"
+                      color="error"
+                      onClick={handleClose}
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      className="m-1"
+                      color="success"
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </Modal.Footer>
+                </form>
+              </Modal>
+              <Button
+                variant="contained"
+                startIcon={<FontAwesomeIcon icon="fa-upload" />}
+                sx={{ m: 2 }}
+                onClick={handleShow}
+              >
+                Import Questions
+              </Button>
+            </div>
           </div>
-
           <QuizTab
             noOfQuestion={noOfQuestion}
             setnoOfQuestion={setnoOfQuestion}

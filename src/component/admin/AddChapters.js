@@ -19,6 +19,7 @@ import SideMenu from "./SideMenu";
 import "../../css/table.css";
 import { getSubjectsAction } from "../../actions/SubjectsAction";
 import { getClassesAction } from "../../actions/ClassesAction";
+import { getChaptersAction } from "../../actions/ChaptersAction";
 import qbuddy from "../../api/qbuddy";
 
 const schema = yup.object({
@@ -29,6 +30,7 @@ const schema = yup.object({
 
 function AddChapters(props) {
   const [show, setShow] = useState(false);
+  const [chapterList, setChapterList] = useState([]);
 
   const {
     register,
@@ -53,31 +55,38 @@ function AddChapters(props) {
     if (props.qclass.data.length === 0) {
       props.getClassesAction();
     }
+    if (props.qclass.data.length === 0) {
+      props.getChaptersAction();
+    }
   }, []);
 
   useEffect(() => {
     createDataTable();
   }, [createDataTable]);
 
-  const data = useMemo(
-    () => [
-      { srno: "1", class: "11th", subject: "Maths", chapters: "Lines" },
-      {
-        srno: "2",
-        class: "12th",
-        subject: "Chemistry",
-        chapters: "Oragnic Chemistry",
-      },
-      { srno: "3", class: "12th", subject: "Maths", chapters: "Calculus" },
-    ],
-    []
-  );
+  useEffect(() => {
+    let newChapterList = [];
+    props.qchapters.data.forEach((ele) => {
+      ele.chapters.forEach((item) => {
+        newChapterList.push({
+          srno: ele.srno,
+          class: ele.Class,
+          subject: ele.Subject,
+          chId: item.id,
+          chapter: item.name,
+        });
+      });
+    });
+    setChapterList(newChapterList);
+  }, [props.qchapters.data]);
+
+  const data = useMemo(() => chapterList, [chapterList]);
   const columns = useMemo(
     () => [
       { Header: "Sr no.", accessor: "srno" },
       { Header: "Class", accessor: "class" },
       { Header: "Subjects", accessor: "subject" },
-      { Header: "Chapters", accessor: "chapters" },
+      { Header: "Chapters", accessor: "chapter" },
     ],
     []
   );
@@ -109,6 +118,7 @@ function AddChapters(props) {
       console.log(response);
       handleClose();
       reset();
+      props.getChaptersAction();
     } catch (err) {
       console.error(err);
     }
@@ -136,7 +146,9 @@ function AddChapters(props) {
                   sx={{ marginBottom: 1 }}
                 >
                   {props.qclass.data.map((item) => (
-                    <MenuItem value={item.Cid}>{item.Class}</MenuItem>
+                    <MenuItem key={item.Cid} value={item.Cid}>
+                      {item.Class}
+                    </MenuItem>
                   ))}
                 </Select>
                 {errors.qclass?.message ? (
@@ -154,7 +166,9 @@ function AddChapters(props) {
                   sx={{ marginBottom: 1 }}
                 >
                   {qsubList.map((item) => (
-                    <MenuItem value={item.Sid}>{item.Subject}</MenuItem>
+                    <MenuItem key={item.Sid} value={item.Sid}>
+                      {item.Subject}
+                    </MenuItem>
                   ))}
                 </Select>
                 {errors.qSub?.message ? (
@@ -245,4 +259,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   getSubjectsAction,
   getClassesAction,
+  getChaptersAction,
 })(AddChapters);

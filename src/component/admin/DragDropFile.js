@@ -1,41 +1,76 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-function DragAndDropFile() {
-  const [fileImg, setFileImg] = useState(null);
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
+function DragAndDropFile(props) {
+  //const [fileImg, setFileImg] = useState(null);
+  const styles = {
+    drag: {
+      display: "flex",
+      justifyContent: "center",
+      alignContent: "center",
+      border: "2px dashed black",
+      padding: "5em",
+      textAlign: "center",
+    },
+    dragUploaded: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignContent: "center",
+      border: "2px dashed #5cb85c",
+      padding: "5em",
+      textAlign: "center",
+    },
+  };
 
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result;
-        setFileImg(binaryStr);
-        console.log(binaryStr);
-      };
-      reader.readAsDataURL(file);
+  const onDrop = useCallback((acceptedFiles) => {
+    console.log(props);
+    console.log(isDragAccept);
+    acceptedFiles.forEach((file) => {
+      //console.log(fi)
+      props.processData(file);
+      // const reader = new FileReader();
+      // reader.onabort = () => console.log("file reading was aborted");
+      // reader.onerror = () => console.log("file reading has failed");
+      // reader.onload = () => {
+      //   // Do whatever you want with the file contents
+      //   const binaryStr = reader.result;
+      //   console.log(file.path);
+      //   //setFileImg(binaryStr);
+      //   console.log(binaryStr);
+      //   props.processData(file);
+      //   //processData(binaryStr);
+      // };
+      //reader.readAsArrayBuffer(file);
     });
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    acceptedFiles,
+    isDragAccept,
+  } = useDropzone({ onDrop, accept: ".xlsx, .xls", maxFiles: 1 });
 
   return (
     <div {...getRootProps()}>
       <input {...getInputProps()} />
       {isDragActive ? (
-        <p>Drop the files here ...</p>
+        <div style={styles.drag}>
+          <p>Drop the files here ...</p>
+        </div>
+      ) : acceptedFiles[0] ? (
+        <div style={styles.dragUploaded}>
+          <p>File Uploaded</p>
+          <p className="text-success">{acceptedFiles[0].path}</p>
+        </div>
       ) : (
-        <div>
+        <div style={styles.drag}>
           <p>Drag 'n' drop some files here, or click to select files</p>
         </div>
       )}
-      {fileImg != null ? (
-        <img
-          src={fileImg}
-          style={{ height: "15em", width: "25em", objectFit: "contain" }}
-        />
-      ) : null}
     </div>
   );
 }

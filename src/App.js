@@ -14,7 +14,10 @@ import {
   faClipboardQuestion,
   faFile,
   faImage,
-  faTrash
+  faTrash,
+  faUpload,
+  faPlus,
+  faEllipsisVertical
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -26,7 +29,10 @@ library.add(
   faClipboardQuestion,
   faFile,
   faImage,
-  faTrash
+  faTrash,
+  faUpload,
+  faPlus,
+  faEllipsisVertical
 );
 
 function App() {

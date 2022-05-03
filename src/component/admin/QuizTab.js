@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "../../css/addQuestion.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,6 +16,8 @@ import {
 
 const QuizTab = ({ noOfQuestion, setnoOfQuestion }) => {
   const inputFile = useRef(null);
+  const [show, setShow] = useState(false);
+
   const fileSubmitHandel = (e, key) => {
     var reader = new FileReader();
     var fileTypes = ["jpg", "jpeg", "png"];
@@ -129,6 +131,9 @@ const QuizTab = ({ noOfQuestion, setnoOfQuestion }) => {
       !noOfQuestionT[i].options[ansIndex].isAns;
     setnoOfQuestion([...noOfQuestionT]);
   };
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const buildAnswerDiv = () => {
     return noOfQuestion.map((item, i) => {
@@ -278,7 +283,12 @@ const QuizTab = ({ noOfQuestion, setnoOfQuestion }) => {
   return (
     <div className="qinput">
       {buildAnswerDiv()}
-      <Button variant="contained" fullWidth onClick={addQuestion}>
+      <Button
+        variant="contained"
+        startIcon={<FontAwesomeIcon icon="fa-plus" />}
+        fullWidth
+        onClick={addQuestion}
+      >
         Add Questions
       </Button>
     </div>
