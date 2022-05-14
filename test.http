@@ -1,2 +1,46 @@
 GET https://2m0x0d.deta.dev/admin/classes/subjects/chapters HTTP/1.1
 Content-Type: application/json
+
+###
+
+ POST https://2m0x0d.deta.dev/admin/create_question 
+ Content-Type: application/json
+
+ {
+    "classid": "1",
+    "sub_id": "1",
+    "chap_id": "1",
+    "questions": [
+        {
+            "question": "what is pi",
+            "q_type": "MCQ",
+            "diff_lvl": "1",
+            "ans_id": [
+                "2"
+            ],
+            "options": [
+                {
+                    "id": "1",
+                    "type": "text",
+                    "value": "hj",
+                    "fileImg": "",
+                    "isAns": false
+                },
+                {
+                    "id": "2",
+                    "type": "text",
+                    "value": "jk",
+                    "fileImg": "",
+                    "isAns": true
+                },
+                {
+                    "type": "text",
+                    "value": "ui",
+                    "fileImg": "",
+                    "id": 3,
+                    "isAns": false
+                }
+            ]
+        }
+    ]
+}

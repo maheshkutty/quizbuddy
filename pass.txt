@@ -2,3 +2,179 @@ KL@788jkyu
 
 username: maheshkutty17@gmail.com  
 password: mahesh123
+
+
+/generatequiz
+
+Req
+{
+    "sid":"1",
+    "classid":"1",
+    "subjectid":"2",
+    "chapterid":"3"
+}
+
+{
+    "status":"success",
+    "time":"",
+    "noQuestion":"",
+    "quizid":""
+}
+
+/startquiz
+
+{
+    "sid":"1",
+    "quizid":""
+}
+
+
+{
+    "classid": "1",
+    "sub_id": "3",
+    "chap_id": "1",
+    "questions": [
+        {
+            "qid":"1",
+            "question": "What is into function ?",
+            "q_type": "MCQ",
+            "diff_lvl": "mid",
+            "ans_id": [
+                4
+            ],
+            "options": [
+                {
+                    "id": "1",
+                    "type": "text",
+                    "value": "one to one",
+                    "fileImg": "",
+                },
+                {
+                    "id": "2",
+                    "type": "text",
+                    "value": "one to many",
+                    "fileImg": "",
+                },
+                {
+                    "type": "text",
+                    "value": "many to many",
+                    "fileImg": "",
+                    "id": 3,
+                },
+                {
+                    "type": "text",
+                    "value": "many to one",
+                    "fileImg": "",
+                    "id": 4,
+                }
+            ]
+        }
+    ]
+}
+
+/submitquiz
+POST
+
+{
+    "sid":"1",
+    "qid":"1",
+    "questions":[{
+        "qid":"1",
+        "aid":["1"],
+        "timetaken":"mm",
+    }]
+}
+
+Response:
+{
+    "status":"success",
+}
+
+/attemptedquiz
+POST
+    {
+        "sid":"1"
+    }
+
+[
+    {
+        "qid":"1",
+        "time":""
+    }
+]
+
+
+/showquizresult
+
+POST
+{
+    "sid":"1",
+    "qid":"1"
+}
+
+{
+    "marks":"12",
+    "total":"20",
+    ""
+}
+
+/problems
+POST
+
+{
+    "classid":"",
+    "subjectid":"",
+    "diffculty":"",
+    "chapeterid":""
+}
+
+{
+    "questions":[
+        {
+            "classid":"",
+            "subjectid":"",
+            "diffculty":"",
+            "chapeterid":"",
+            "name":"",
+            "questionid":""
+        }
+    ]   
+}
+
+/question
+
+{
+    "questionid":""
+}
+
+{
+    "name":"",
+    "options":[...]
+}
+
+/attemptquestion
+
+POST
+{
+    "questionid":"",
+    "ansid":"",
+    "timetaken":"",
+    "sid":""
+}
+
+{
+    "result":"true",
+    "correctAns":""
+}
+
+
+/profile
+POST
+
+{
+    "sid":"1"
+}
+
+{
+    
+}

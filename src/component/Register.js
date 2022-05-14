@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Alert } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { LoadingButton } from "@mui/lab";
 
 import { registerAction } from "../actions/index";
 
@@ -35,15 +36,19 @@ const Register = (props) => {
     resolver: yupResolver(schema),
   });
 
+  const [registerLoad, setRegisterLoad] = useState(false);
+
   useEffect(() => {
     if (props.signUpMsg.successMsg)
       setTimeout(() => {
         navigate("/login");
       }, 5000);
+    setRegisterLoad(false);
   }, [props.signUpMsg]);
 
   const onSignUp = (data) => {
     console.log(data);
+    setRegisterLoad(true);
     props.registerAction(data);
   };
 
@@ -120,13 +125,14 @@ const Register = (props) => {
               />
             </div>
             <div className="mt-2">
-              <Button
+              <LoadingButton
                 type="submit"
+                loading={registerLoad}
                 variant="contained"
                 sx={{ width: "100%", background: "#ea5455" }}
               >
                 Submit
-              </Button>
+              </LoadingButton>
             </div>
           </form>
         </div>

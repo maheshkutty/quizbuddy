@@ -21,6 +21,9 @@ import AddChapters from "./component/admin/AddChapters";
 import AddQuestions from "./component/admin/AddQuestions";
 import QuestionTable from "./component/admin/QuestionTable";
 import Dashboard from "./component/Dashboard";
+import QuestionStatus from "./component/admin/QuestionStatus";
+import ProblemList from "./component/ProblemList";
+import AttemptQuiz from "./component/AttemptQuiz";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
@@ -59,12 +62,15 @@ ReactDOM.render(
           }
         />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/problems" element={<ProblemList />} />
+        <Route path="/attemptquiz" element={<AttemptQuiz />} />
         <Route path="/admin/home" element={<SideMenu />} />
         <Route path="/admin/classess" element={<AddClass />} />
         <Route path="/admin/subjects" element={<AddSubjects />} />
         <Route path="/admin/chapters" element={<AddChapters />} />
         <Route path="/admin/questions" element={<QuestionTable />} />
         <Route path="/admin/addquestions" element={<AddQuestions />} />
+        <Route path="/admin/qstatus" element={<QuestionStatus />} />
       </Routes>
     </BrowserRouter>
   </Provider>,

@@ -1,45 +1,83 @@
-import React, { Children, Component } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button, Alert } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
 
 import "../css/Header.css";
 
 function Header({ children }) {
-  let navigate = useNavigate();
+  const [activeNav, setActiveNav] = useState("/login");
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const onLogin = () => {
-    navigate("/login");
-  };
+  useEffect(() => {
+    setActiveNav(location.pathname);
+  }, []);
 
-  const onRegister = () => {
-    navigate("/register");
+  // const onLogin = () => {
+  //   navigate("/login");
+  // };
+
+  // const onRegister = () => {
+  //   navigate("/register");
+  // };
+
+  const handleSelect = (eventKey) => {
+    navigate(eventKey);
   };
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark main">
+      <nav className="navbar navbar-expand-lg main">
         <div className="container-fluid">
-          <a className="navbar-brand">QuizBuddy</a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div
+          <a className="navbar-brand brandstyle">QuizBuddy</a>
+          <div className="navbar-nav">
+            <Nav onSelect={handleSelect}>
+              <Nav.Link
+                eventKey="/login"
+                className={
+                  activeNav == "/login" ? "headermenu active" : "headermenu"
+                }
+              >
+                Home
+              </Nav.Link>
+              <Nav.Link
+                eventKey="/login"
+                className={
+                  activeNav == "/login" ? "headermenu active" : "headermenu"
+                }
+              >
+                About Us
+              </Nav.Link>
+              <Nav.Link
+                eventKey="/register"
+                className={
+                  activeNav == "/register" ? "headermenu active" : "headermenu"
+                }
+              >
+                Register
+              </Nav.Link>
+              <Nav.Link
+                eventKey="/login"
+                className={
+                  activeNav == "/login" ? "headermenu active" : "headermenu"
+                }
+              >
+                Login
+              </Nav.Link>
+            </Nav>
+          </div>
+          {/* <div
             className="collapse navbar-collapse justify-content-end"
             id="navbarNavAltMarkup"
           >
             <div className="navbar-nav">
-              <a className="nav-link active" aria-current="page">
+            <Nav>
+              <a className="nav-link headermenu" aria-current="page">
                 Home
               </a>
-              <a className="nav-link">About Us</a>
+              </Nav>
+              <a className="nav-link headermenu">About Us</a>
               <div>
                 <Button
                   type="submit"
@@ -75,7 +113,7 @@ function Header({ children }) {
                 </Button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </nav>
       {children}

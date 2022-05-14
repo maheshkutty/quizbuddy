@@ -11,9 +11,18 @@ import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import AlarmIcon from "@mui/icons-material/Alarm";
+import { useNavigate } from "react-router-dom";
+
 import QuizTheme from "../theme/appTheme";
 
 function QuizCard(props) {
+
+  const navigate = useNavigate();
+
+  const onStartQuiz = () => {
+    navigate("/attemptquiz");
+  }
+
   return (
     <Box sx={{ width: 250 }}>
       <Card>
@@ -48,7 +57,7 @@ function QuizCard(props) {
         </CardContent>
         <CardActions>
           <ThemeProvider theme={QuizTheme}>
-            <Button fullWidth="true" variant="outlined" color="neutral">
+            <Button fullWidth="true" variant="outlined" color="neutral" onClick={onStartQuiz}>
               Start quiz
             </Button>
           </ThemeProvider>

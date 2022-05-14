@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Toast from "../utils/Toast";
 
 import SideMenu from "./SideMenu";
 import "../../css/table.css";
@@ -34,6 +35,8 @@ function AddClass(props) {
   });
 
   const [show, setShow] = useState(false);
+  const [toastState, setToastState] = useState(false);
+
   useEffect(() => {
     if (props.qclass.data.length == 0) {
       props.getClassesAction();
@@ -79,6 +82,7 @@ function AddClass(props) {
         props.getClassesAction();
         handleClose();
         reset();
+        setToastState(true);
       }
     } catch (error) {
       console.log(error);
@@ -136,6 +140,9 @@ function AddClass(props) {
         </form>
       </Modal>
       <div className="col m-2" style={{ color: "#7b809a" }}>
+        <Toast open={toastState} setOpen={setToastState}>
+          Class Successfully Added
+        </Toast>
         <h2 style={{ color: "#344767" }}>Classess</h2>
         <div className="d-flex flex-row-reverse">
           <ThemeProvider theme={QuizTheme}>

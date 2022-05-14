@@ -78,9 +78,12 @@ function QuestionTable(props) {
       {
         Header: "Name",
         Cell: ({ cell }) => {
+          console.log(cell.row.original);
           return (
             <div>
-              <Link to="#">What is partical</Link>
+              <Link to="/admin/qstatus" state={{...cell.row.original, name: "What is partical"}}>
+                What is partical
+              </Link>
             </div>
           );
         },

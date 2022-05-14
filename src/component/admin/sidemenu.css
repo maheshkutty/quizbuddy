@@ -11,19 +11,20 @@
     margin: 0 0.5em 0 0.3em;
 }
 
-.nav-link {
+.sidelink {
     color: white;
     margin: 0.5em 1em 0.5em 1em;
     border-radius: 10px;
 }
 
-.nav-link:hover {
+.sidelink:hover {
     color: white;
     background-color: #6c757d;
 }
 
-.nav-link.active {
+.sidelink.active:hover {
     color: white;
+    margin: 0.5em 1em 0.5em 1em;
 }
 
 .logotext{

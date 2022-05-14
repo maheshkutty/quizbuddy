@@ -1,13 +1,21 @@
+.brandstyle {
+  color: #EA5455;
+  font-weight: bold;
+}
+
+.headermenu {
+  color: #333333;
+}
+
+.active {
+  color: #EA5455;
+}
+
+.headermenu:hover {
+  color: #EA5455;
+}
+
 .main {
-  background-color: #ea5455;
-  color: white;
-}
-
-.navbar-custom .navbar-brand,
-.navbar-custom .navbar-text {
-    color: #ffffff;
-}
-
-.navbar-custom .navbar-nav .nav-link {
-    color: #ffffff;
+  background-color: white;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 20%);
 }

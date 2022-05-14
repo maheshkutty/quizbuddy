@@ -30,7 +30,7 @@ function SideMenu(props) {
         >
           <Nav.Link
             eventKey="/admin/home"
-            className={activeNav == "/admin/home" ? "linkStyleActive" : null}
+            className={activeNav == "/admin/home" ? "sidelink linkStyleActive" : "sidelink"}
           >
             <FontAwesomeIcon icon="fa-house" className="iconStyle" />
             Home
@@ -38,7 +38,7 @@ function SideMenu(props) {
           <Nav.Link
             eventKey="/admin/classess"
             className={
-              activeNav == "/admin/classess" ? "linkStyleActive" : null
+              activeNav == "/admin/classess" ? "sidelink linkStyleActive" : "sidelink"
             }
           >
             <FontAwesomeIcon icon="fa-graduation-cap" className="iconStyle" />
@@ -47,7 +47,7 @@ function SideMenu(props) {
           <Nav.Link
             eventKey="/admin/subjects"
             className={
-              activeNav == "/admin/subjects" ? "linkStyleActive" : null
+              activeNav == "/admin/subjects" ? "sidelink linkStyleActive" : "sidelink"
             }
           >
             <FontAwesomeIcon icon="fa-book" className="iconStyle" />
@@ -56,7 +56,7 @@ function SideMenu(props) {
           <Nav.Link
             eventKey="/admin/chapters"
             className={
-              activeNav == "/admin/chapters" ? "linkStyleActive" : null
+              activeNav == "/admin/chapters" ? "sidelink linkStyleActive" : "sidelink"
             }
           >
             <FontAwesomeIcon icon="fa-file" className="iconStyle" />
@@ -65,7 +65,7 @@ function SideMenu(props) {
           <Nav.Link
             eventKey="/admin/questions"
             className={
-              activeNav == "/admin/questions" ? "linkStyleActive" : null
+              activeNav == "/admin/questions" ? "sidelink linkStyleActive" : "sidelink"
             }
           >
             <FontAwesomeIcon

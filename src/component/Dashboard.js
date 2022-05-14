@@ -26,6 +26,7 @@ import { connect } from "react-redux";
 import { getClassesAction } from "../actions/ClassesAction";
 import { getSubjectsAction } from "../actions/SubjectsAction";
 import QuizTheme from "../theme/appTheme";
+import HeaderHome from "./HeaderHome";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -128,124 +129,131 @@ function Dashboard(props) {
   }
 
   return (
-    <div className="container mt-2">
-      <div className="row mb-5">
-        <p style={{ fontWeight: "bold", fontSize: "1.5em" }}>
-          JEE/NEET Quiz: Start Free Quizzes for JEE/NEET & other state CET exams
-          2022. <br /> Practice free online maths, chemistry, biology with
-          multiple choice answers.
-        </p>
-      </div>
-      <div className="row">
-        <div className="col">
-          <List
-            sx={{ width: "100%", maxWidth: 200, bgcolor: "background.paper", color:"#999" }}
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            subheader={
-              <ListSubheader
-                component="div"
-                id="nested-list-subheader"
-                sx={{ fontSize: 20 }}
-                disableGutters="true"
-              >
-                Filter By
-              </ListSubheader>
-            }
-          >
-            <ListSubheader
-              disableGutters="true"
-              component="div"
-              sx={{ lineHeight: 2 }}
-            >
-              Class
-            </ListSubheader>
-            {classList.map((item, i) => (
-              <>
-                <ListItemButton
-                  component="a"
-                  onClick={() => handleClassClick(i)}
-                  sx={{ p: 0 }}
-                >
-                  <Checkbox
-                    value={item.Cid}
-                    size="small"
-                    checked={item.checked}
-                    onChange={() => checkAnswer(i)}
-                  />
-                  <ListItemText
-                    primary={item.Class}
-                    sx={{ my: 0 }}
-                    primaryTypographyProps={{
-                      fontSize: 14,
-                      fontWeight: "medium",
-                      letterSpacing: 0,
-                    }}
-                  />
-                  {item.open ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={item.open} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    <ListItemButton sx={{ p: 0, pl: 2 }}>
-                      <Checkbox value="0" size="small" />
-                      <ListItemText
-                        primary="All"
-                        sx={{ my: 0 }}
-                        primaryTypographyProps={{
-                          fontSize: 14,
-                          fontWeight: "medium",
-                          letterSpacing: 0,
-                        }}
-                      />
-                    </ListItemButton>
-                    {props.qsub.data.reduce((prev, curr) => {
-                      if (item.Cid == curr.Cid) {
-                        let newSub = (
-                          <ListItemButton sx={{ p: 0, pl: 2 }}>
-                            <Checkbox value={curr.Sid} size="small" />
-                            <ListItemText
-                              primary={curr.Subject}
-                              sx={{ my: 0 }}
-                              primaryTypographyProps={{
-                                fontSize: 14,
-                                fontWeight: "medium",
-                                letterSpacing: 0,
-                              }}
-                            />
-                          </ListItemButton>
-                        );
-                        prev.push(newSub);
-                      }
-                      return prev;
-                    }, [])}
-                  </List>
-                </Collapse>
-              </>
-            ))}
-          </List>
-          <ThemeProvider theme={QuizTheme}>
-            <Button
-              color="neutral"
-              fullWidth="true"
-              variant="contained"
-              size="small"
-            >
-              Apply
-            </Button>
-          </ThemeProvider>
+    <HeaderHome>
+      <div className="container mt-2">
+        <div className="row mb-5">
+          <p style={{ fontWeight: "bold", fontSize: "1.5em" }}>
+            JEE/NEET Quiz: Start Free Quizzes for JEE/NEET & other state CET
+            exams 2022. <br /> Practice free online maths, chemistry, biology
+            with multiple choice answers.
+          </p>
         </div>
-        <div className="col-10">
+        <div className="row">
           <div className="col">
-            <h4 className="mb-3">Your personalized mock test</h4>
-            <QuizCard />
+            <List
+              sx={{
+                width: "100%",
+                maxWidth: 200,
+                bgcolor: "background.paper",
+                color: "#999",
+              }}
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+              subheader={
+                <ListSubheader
+                  component="div"
+                  id="nested-list-subheader"
+                  sx={{ fontSize: 20 }}
+                  disableGutters="true"
+                >
+                  Filter By
+                </ListSubheader>
+              }
+            >
+              <ListSubheader
+                disableGutters="true"
+                component="div"
+                sx={{ lineHeight: 2 }}
+              >
+                Class
+              </ListSubheader>
+              {classList.map((item, i) => (
+                <>
+                  <ListItemButton
+                    component="a"
+                    onClick={() => handleClassClick(i)}
+                    sx={{ p: 0 }}
+                  >
+                    <Checkbox
+                      value={item.Cid}
+                      size="small"
+                      checked={item.checked}
+                      onChange={() => checkAnswer(i)}
+                    />
+                    <ListItemText
+                      primary={item.Class}
+                      sx={{ my: 0 }}
+                      primaryTypographyProps={{
+                        fontSize: 14,
+                        fontWeight: "medium",
+                        letterSpacing: 0,
+                      }}
+                    />
+                    {item.open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                  <Collapse in={item.open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      <ListItemButton sx={{ p: 0, pl: 2 }}>
+                        <Checkbox value="0" size="small" />
+                        <ListItemText
+                          primary="All"
+                          sx={{ my: 0 }}
+                          primaryTypographyProps={{
+                            fontSize: 14,
+                            fontWeight: "medium",
+                            letterSpacing: 0,
+                          }}
+                        />
+                      </ListItemButton>
+                      {props.qsub.data.reduce((prev, curr) => {
+                        if (item.Cid == curr.Cid) {
+                          let newSub = (
+                            <ListItemButton sx={{ p: 0, pl: 2 }}>
+                              <Checkbox value={curr.Sid} size="small" />
+                              <ListItemText
+                                primary={curr.Subject}
+                                sx={{ my: 0 }}
+                                primaryTypographyProps={{
+                                  fontSize: 14,
+                                  fontWeight: "medium",
+                                  letterSpacing: 0,
+                                }}
+                              />
+                            </ListItemButton>
+                          );
+                          prev.push(newSub);
+                        }
+                        return prev;
+                      }, [])}
+                    </List>
+                  </Collapse>
+                </>
+              ))}
+            </List>
+            <ThemeProvider theme={QuizTheme}>
+              <Button
+                color="neutral"
+                fullWidth="true"
+                variant="contained"
+                size="small"
+              >
+                Apply
+              </Button>
+            </ThemeProvider>
           </div>
-          <div className="col m-2">
-            <h4 className="mt-5 mb-3">All quiz</h4>
-            <QuizCard />
+          <div className="col-10">
+            <div className="col">
+              <h4 className="mb-3">Your personalized mock test</h4>
+              <QuizCard />
+            </div>
+            <div className="col m-2">
+              <h4 className="mt-5 mb-3">All quiz</h4>
+              <QuizCard />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </HeaderHome>
   );
 }
 

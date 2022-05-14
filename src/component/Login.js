@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Alert } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
+import { LoadingButton } from "@mui/lab";
 
 import { loginAction } from "../actions/index";
 import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
   let navigate = useNavigate();
+  const [loginLoad, setLoginLoad] = useState(false);
 
   const {
     register,
@@ -25,9 +27,11 @@ const Login = (props) => {
     if (props.userSession.uid != "") {
       navigate("/");
     }
+    setLoginLoad(false);
   }, [props.userSession]);
 
   const onSubmit = (data) => {
+    setLoginLoad(true);
     props.loginAction({ email: data.email, password: data.password });
   };
 
@@ -43,7 +47,7 @@ const Login = (props) => {
             <div className="mt-2">
               <TextField
                 fullWidth
-                error = {errors.email?.type === 'required' ? true : false}
+                error={errors.email?.type === "required" ? true : false}
                 variant="outlined"
                 label="Email"
                 id="email"
@@ -54,7 +58,7 @@ const Login = (props) => {
             <div className="mt-2">
               <TextField
                 fullWidth
-                error = {errors.password?.type === 'required' ? true : false}
+                error={errors.password?.type === "required" ? true : false}
                 type={"password"}
                 variant="outlined"
                 label="Password"
@@ -64,9 +68,14 @@ const Login = (props) => {
               />
             </div>
             <div className="mt-2">
-              <Button type="submit" sx={{width: "100%", background:"#2D4059"}} variant="contained" >
+              <LoadingButton
+                loading={loginLoad}
+                type="submit"
+                sx={{ width: "100%", background: "#2D4059" }}
+                variant="contained"
+              >
                 Submit
-              </Button>
+              </LoadingButton>
             </div>
           </form>
         </div>

@@ -8,20 +8,23 @@ import {
   FormControl,
   FormHelperText,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Modal } from "react-bootstrap";
+import * as ExcelJS from "exceljs";
+import { Link } from "react-router-dom";
+
+import DragAndDropFile from "./DragDropFile";
+import Toast from "../utils/Toast";
 import "../../css/addQuestion.css";
 import { getClassesAction } from "../../actions/ClassesAction";
 import { getSubjectsAction } from "../../actions/SubjectsAction";
 import qbuddy from "../../api/qbuddy";
 import QuizTab from "./QuizTab";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Modal } from "react-bootstrap";
-import DragAndDropFile from "./DragDropFile";
-import * as ExcelJS from "exceljs";
-import { Link } from "react-router-dom";
 
 const schema = yup.object({
   qclass: yup.string().required("Select class !"),
@@ -125,8 +128,9 @@ function AddQuestions(props) {
     }
   }
 
+  const [toastState, setToastState] = useState(false);
   const [show, setShow] = useState(false);
-
+  const [saveLoad, setSaveLoad] = useState(false);
   const [noOfQuestion, setnoOfQuestion] = useState([
     {
       name: "",
@@ -207,7 +211,51 @@ function AddQuestions(props) {
     return result;
   };
 
+  const resetQuiz = () => {
+    setValue("qclass", "");
+    setValue("qSub", "");
+    setValue("qChapter", "");
+    setnoOfQuestion([
+      {
+        name: "",
+        fileImg: "",
+        diff_lvl: 0,
+        options: [
+          {
+            id: "1",
+            type: "text",
+            value: "",
+            fileImg: "",
+            isAns: false,
+          },
+          {
+            id: "2",
+            type: "text",
+            value: "",
+            fileImg: "",
+            isAns: false,
+          },
+        ],
+      },
+    ]);
+  };
+
+  const postQuestion = async (payload) => {
+    try {
+      let res = await qbuddy.post("/admin/create_question", payload);
+      res = res.data;
+      console.log(res);
+      setSaveLoad(false);
+      setToastState(true);
+      resetQuiz();
+    } catch (ex) {
+      console.log(ex);
+      setSaveLoad(false);
+    }
+  };
+
   const saveQuiz = ({ qclass, qSub, qChapter }) => {
+    setSaveLoad(true);
     let questionPayload = {};
     console.log(qclass);
     let isQuestionExist = noOfQuestion[0].name != "" ? true : false;
@@ -222,7 +270,7 @@ function AddQuestions(props) {
         )
         .map((q) => ({
           question: q.name,
-          q_type: "multi",
+          q_type: "MCQ",
           diff_lvl: "1",
           ans_id: q.options.reduce((prev, curr) => {
             if (curr.isAns) prev.push(curr.id);
@@ -231,13 +279,17 @@ function AddQuestions(props) {
           options: q.options.filter((option) => option.value != ""),
         }));
       console.log(questionPayload);
+      postQuestion(questionPayload);
     }
   };
 
   return (
     <SideMenu>
       <div className="col m-2">
-        <Link to="/admin/questions">  Back</Link>
+        <Link to="/admin/questions"> Back</Link>
+        <Toast open={toastState} setOpen={setToastState}>
+          Question Added Sucessfully
+        </Toast>
         <form onSubmit={handleSubmit(saveQuiz)}>
           <div className="d-flex flex-wrap">
             <div className="col-6 p-2">
@@ -357,16 +409,22 @@ function AddQuestions(props) {
           />
           <div className="d-flex mt-2 justify-content-between">
             <div className="col">
-              <Button variant="outlined">Reset Quiz</Button>
+              <Button variant="outlined" onClick={resetQuiz}>
+                Reset Quiz
+              </Button>
             </div>
             <div className="col-3 d-flex justify-content-between">
               <div>
                 <Button variant="outlined">Preview Quiz</Button>
               </div>
               <div>
-                <Button type="submit" variant="outlined">
+                <LoadingButton
+                  loading={saveLoad}
+                  type="submit"
+                  variant="outlined"
+                >
                   Save Quiz
-                </Button>
+                </LoadingButton>
               </div>
             </div>
           </div>
