@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { LoadingButton } from "@mui/lab";
 
 import { loginAction } from "../actions/index";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = (props) => {
   let navigate = useNavigate();
@@ -78,6 +78,9 @@ const Login = (props) => {
               </LoadingButton>
             </div>
           </form>
+          <div className="mt-2 text-center">
+            <Link to="/admin/home">Go to Admin</Link>
+          </div>
         </div>
       </div>
     </div>
