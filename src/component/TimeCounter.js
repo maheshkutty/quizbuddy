@@ -31,6 +31,10 @@ class TimeCounter extends React.Component {
   componentDidMount() {
     let timeLeftVar = this.secondsToTime(this.state.seconds);
     this.setState({ time: timeLeftVar });
+    //startTimer();
+    if (this.timer == 0 && this.state.seconds > 0) {
+      this.timer = setInterval(this.countDown, 1000);
+    }
   }
 
   startTimer() {
@@ -61,15 +65,14 @@ class TimeCounter extends React.Component {
           p: 1,
           display: "flex",
           alignItems: "center",
-          justifyContent:"center"
+          justifyContent: "center",
         }}
       >
-        <AlarmIcon sx={{ fontSize: 30, mr:1 }} />
+        <AlarmIcon sx={{ fontSize: 30, mr: 1 }} />
         <span>Time Left - 0</span>
         <span>
           {this.state.time.m} : {this.state.time.s} mins
         </span>
-        <Button onClick={this.startTimer}>Start</Button>
       </Box>
     );
   }

@@ -25,7 +25,7 @@ const Login = (props) => {
 
   useEffect(() => {
     if (props.userSession.uid != "") {
-      navigate("/");
+      navigate("/problems");
     }
     setLoginLoad(false);
   }, [props.userSession]);

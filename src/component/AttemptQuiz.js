@@ -21,7 +21,7 @@ function AttemptQuiz() {
           <div className="col">
             <QuestionDetails />
           </div>
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
@@ -30,9 +30,9 @@ function AttemptQuiz() {
           >
             <Button variant="contained">Prev</Button>
             <Button variant="contained">Next</Button>
-          </Box>
+          </Box> */}
         </div>
-        <div className="col-4">
+        <div className="col-4 sticky-top">
           <QuestionsList />
         </div>
       </div>

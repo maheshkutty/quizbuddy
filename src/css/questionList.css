@@ -1,4 +1,4 @@
-.qComponent{
+.qComponent {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7,4 +7,14 @@
     width: 36px;
     height: 36px;
     text-align: center;
+}
+
+.selectedAns {
+    color: #5e93ff;
+    border: 1em solid #5e93ff;
+}
+
+.selectedAnsSpan {
+    color: white;
+    background-color: #5e93ff;
 }

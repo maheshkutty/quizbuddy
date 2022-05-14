@@ -6,7 +6,10 @@ import "../css/questionList.css";
 
 function QuestionsList() {
   return (
-    <Box sx={{ border: 1, p: 0, borderColor: "#D1D1D1", borderRadius: 1, mt:2, }}>
+    <Box
+      sx={{ border: 1, p: 0, borderColor: "#D1D1D1", borderRadius: 1, m: 2 }}
+      className="sticky-top"
+    >
       <Box sx={{ borderBottom: 1, p: 1.5, borderColor: "#D1D1D1" }}>
         <h3>Questions Analysis</h3>
       </Box>
