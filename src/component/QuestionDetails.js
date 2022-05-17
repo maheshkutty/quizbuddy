@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import "../css/questionList.css";
 
-function QuestionDetails() {
+function QuestionDetails({ history }) {
   const [questionDetailsData, setQuestionDetailsData] = useState([
     {
       qid: "1",
@@ -105,6 +105,13 @@ function QuestionDetails() {
   useEffect(() => {
     clearTimeout(intervalId);
   }, []);
+
+  // useEffect(() => {
+  //   window.history.pushState(null, document.title, window.location.href);
+  //   window.addEventListener('popstate', function (event){
+  //       window.history.pushState(null, document.title,  window.location.href);
+  //   });
+  // }, []);
 
   const nextShow = (i) => {
     const qtempdata = questionDetailsData;

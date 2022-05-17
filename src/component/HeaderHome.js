@@ -41,6 +41,14 @@ const HeaderHome = ({ children }) => {
               >
                 Quizzes
               </Nav.Link>
+              <Nav.Link
+                eventKey="/profile"
+                className={
+                  activeNav == "/profile" ? "headermenu active" : "headermenu"
+                }
+              >
+                Profile
+              </Nav.Link>
             </Nav>
           </div>
         </div>

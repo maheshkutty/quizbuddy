@@ -1,0 +1,27 @@
+.sectionstyle{
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-color: #d8d8d8;
+    margin: 2em 1em 2em 1em;
+    padding: 1em 2em 1em 2em;
+}
+
+.profileContainer{
+    color:#333333;
+    margin: 2em 5em 1em 5em;
+}
+
+.headertext{
+    font-size: 1.25rem;
+
+}
+
+.normaltext{
+    font-size: 1rem;
+}
+
+.iconsStyle{
+    font-size: 8em;
+    margin: 0em 1em 0 1em;
+    color: grey;
+}

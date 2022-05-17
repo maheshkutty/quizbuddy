@@ -74,6 +74,7 @@ function AddQuestions(props) {
                   questions: [],
                 };
               }
+              console.log(row.getCell(5).value);
               q[y].questions.push({
                 name: row.getCell(4).value,
                 q_type: "multi",
@@ -84,28 +85,28 @@ function AddQuestions(props) {
                   {
                     id: 1,
                     type: "text",
-                    value: row.getCell(5),
+                    value: row.getCell(5).value,
                     isAns: false,
                     fileImg: "",
                   },
                   {
                     id: 2,
                     type: "text",
-                    value: row.getCell(6),
+                    value: row.getCell(6).value,
                     isAns: false,
                     fileImg: "",
                   },
                   {
                     id: 3,
                     type: "text",
-                    value: row.getCell(7),
+                    value: row.getCell(7).value,
                     isAns: false,
                     fileImg: "",
                   },
                   {
                     id: 4,
                     type: "text",
-                    value: row.getCell(8),
+                    value: row.getCell(8).value,
                     isAns: false,
                     fileImg: "",
                   },

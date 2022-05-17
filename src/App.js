@@ -17,7 +17,8 @@ import {
   faTrash,
   faUpload,
   faPlus,
-  faEllipsisVertical
+  faEllipsisVertical,
+  faCircleUser
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -32,7 +33,8 @@ library.add(
   faTrash,
   faUpload,
   faPlus,
-  faEllipsisVertical
+  faEllipsisVertical,
+  faCircleUser
 );
 
 function App() {

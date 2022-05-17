@@ -30,11 +30,18 @@ export const NormalActions = (payload) => {
   };
 };
 
+export const SucessMsgAction = (payload) => {
+  return {
+    type: "change_msg",
+    action: payload,
+  };
+};
+
 export const registerAction = (profiledata) => async (dispatch, getStates) => {
   const { name, address, phone, email, password } = profiledata;
   let storeMsg = {
     successMsg: null,
-    errMsg: null    
+    errMsg: null,
   };
   try {
     const data = await createUserWithEmailAndPassword(auth, email, password);
