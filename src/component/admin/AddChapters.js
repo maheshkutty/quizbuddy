@@ -8,6 +8,7 @@ import {
   InputLabel,
   FormControl,
   FormHelperText,
+  ThemeProvider,
 } from "@mui/material";
 import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -21,6 +22,7 @@ import { getSubjectsAction } from "../../actions/SubjectsAction";
 import { getClassesAction } from "../../actions/ClassesAction";
 import { getChaptersAction } from "../../actions/ChaptersAction";
 import qbuddy from "../../api/qbuddy";
+import QuizTheme from "../../theme/appTheme";
 
 const schema = yup.object({
   qclass: yup.string().required("Select class !"),
@@ -55,7 +57,7 @@ function AddChapters(props) {
     if (props.qclass.data.length === 0) {
       props.getClassesAction();
     }
-    if (props.qclass.data.length === 0) {
+    if (props.qchapters.data.length === 0) {
       props.getChaptersAction();
     }
   }, []);
@@ -64,12 +66,12 @@ function AddChapters(props) {
     createDataTable();
   }, [createDataTable]);
 
-  useEffect(() => {
+  const processChapterList = () => {
     let newChapterList = [];
     props.qchapters.data.forEach((ele) => {
-      ele.chapters.forEach((item) => {
+      ele.chapters.forEach((item, i) => {
         newChapterList.push({
-          srno: ele.srno,
+          srno: i + 1,
           class: ele.Class,
           subject: ele.Subject,
           chId: item.id,
@@ -77,10 +79,10 @@ function AddChapters(props) {
         });
       });
     });
-    setChapterList(newChapterList);
-  }, [props.qchapters.data]);
+    return newChapterList;
+  };
 
-  const data = useMemo(() => chapterList, [chapterList]);
+  const data = useMemo(() => processChapterList(), [props.qchapters.data]);
   const columns = useMemo(
     () => [
       { Header: "Sr no.", accessor: "srno" },
@@ -208,9 +210,13 @@ function AddChapters(props) {
       </Modal>
       <div className="col m-2" style={{ color: "#7b809a" }}>
         <h2 style={{ color: "#344767" }}>Chapters</h2>
-        <Button variant="contained" onClick={handleShow}>
-          Add
-        </Button>
+        <div className="d-flex flex-row-reverse">
+          <ThemeProvider theme={QuizTheme}>
+            <Button variant="contained" color="dpink" onClick={handleShow}>
+              Add
+            </Button>
+          </ThemeProvider>
+        </div>
         <table {...getTableProps()} className="tableStyle">
           <thead className="tableHeaderStyle">
             {headerGroups.map((headerGroup) => (

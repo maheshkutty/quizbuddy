@@ -74,7 +74,6 @@ function AddQuestions(props) {
                   questions: [],
                 };
               }
-              console.log(row.getCell(5).value);
               q[y].questions.push({
                 name: row.getCell(4).value,
                 q_type: "multi",
@@ -243,6 +242,7 @@ function AddQuestions(props) {
 
   const postQuestion = async (payload) => {
     try {
+      console.log(payload);
       let res = await qbuddy.post("/admin/create_question", payload);
       res = res.data;
       console.log(res);
@@ -272,7 +272,7 @@ function AddQuestions(props) {
         .map((q) => ({
           question: q.name,
           q_type: "MCQ",
-          diff_lvl: "1",
+          diff_lvl: q.diff_lvl,
           ans_id: q.options.reduce((prev, curr) => {
             if (curr.isAns) prev.push(curr.id);
             return prev;

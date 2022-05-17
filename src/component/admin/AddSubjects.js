@@ -8,6 +8,7 @@ import {
   InputLabel,
   FormControl,
   FormHelperText,
+  ThemeProvider,
 } from "@mui/material";
 import { Modal } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -21,6 +22,7 @@ import "../../css/table.css";
 import { getSubjectsAction } from "../../actions/SubjectsAction";
 import { getClassesAction } from "../../actions/ClassesAction";
 import qbuddy from "../../api/qbuddy";
+import QuizTheme from "../../theme/appTheme";
 
 const schema = yup.object({
   qclass: yup.string().required("Select class !"),
@@ -179,9 +181,13 @@ function AddSubjects(props) {
       </Modal>
       <div className="col m-2" style={{ color: "#7b809a" }}>
         <h2 style={{ color: "#344767" }}>Subjects</h2>
-        <Button variant="contained" onClick={handleShow}>
-          Add Subjects
-        </Button>
+        <div className="d-flex flex-row-reverse">
+          <ThemeProvider theme={QuizTheme}>
+            <Button variant="contained" color="dpink" onClick={handleShow}>
+              Add
+            </Button>
+          </ThemeProvider>
+        </div>
         <table {...getTableProps()} className="tableStyle">
           <thead className="tableHeaderStyle">
             {headerGroups.map((headerGroup) => (
