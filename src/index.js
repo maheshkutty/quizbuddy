@@ -26,6 +26,8 @@ import ProblemList from "./component/ProblemList";
 import AttemptQuiz from "./component/AttemptQuiz";
 import Profile from "./component/Profile";
 import AttemptProblem from "./component/AttemptProblem";
+import HomePage from "./component/HomePage";
+import Aboutus from "./component/Aboutus";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
@@ -39,22 +41,8 @@ ReactDOM.render(
             </RequireAuth>
           }
         />
-        <Route
-          path="/register"
-          element={
-            <Header>
-              <Register />
-            </Header>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <Header>
-              <Login />
-            </Header>
-          }
-        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/class"
           element={
@@ -63,11 +51,41 @@ ReactDOM.render(
             </RequireAuth>
           }
         />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/problems" element={<ProblemList />} />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/problems"
+          element={
+            <RequireAuth>
+              <ProblemList />
+            </RequireAuth>
+          }
+        />
         <Route path="/attemptquiz" element={<AttemptQuiz />} />
-        <Route path="/attemptproblem" element={<AttemptProblem />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/aboutus" element={<Aboutus />} />
+        <Route
+          path="/attemptproblem"
+          element={
+            <RequireAuth>
+              <AttemptProblem />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
         <Route path="/admin/home" element={<SideMenu />} />
         <Route path="/admin/classess" element={<AddClass />} />
         <Route path="/admin/subjects" element={<AddSubjects />} />

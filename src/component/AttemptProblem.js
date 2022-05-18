@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Box, Button } from "@mui/material";
+import { Box, Button, ThemeProvider } from "@mui/material";
 import qbuddy from "../api/qbuddy";
 import HeaderHome from "./HeaderHome";
 import "../css/questionList.css";
+import QuizTheme from "../theme/appTheme";
 
 function AttemptProblem(props) {
   let { state } = useLocation();
@@ -61,32 +62,43 @@ function AttemptProblem(props) {
 
   return (
     <HeaderHome>
-      <div className="cotainer">
-        <p>Attempt Problem</p>
-        {problemData != null ? (
-          <>
-            <Box
-              key="1"
-              sx={{
-                border: 1,
-                p: 0,
-                borderColor: "#D1D1D1",
-                borderRadius: 1,
-                m: 2,
-              }}
-            >
-              <Box sx={{ borderBottom: 1, p: 1.5, borderColor: "#D1D1D1" }}>
-                <h3>Questions 1</h3>
+      {state == null ? (
+        <div class="d-flex justify-content-center align-items-center mt-5">
+          <h2>Error while loading page</h2>
+        </div>
+      ) : (
+        <div className="container">
+          {problemData != null ? (
+            <>
+              <Box
+                key="1"
+                sx={{
+                  border: 1,
+                  p: 0,
+                  borderColor: "#D1D1D1",
+                  borderRadius: 1,
+                  m: 2,
+                }}
+              >
+                <Box sx={{ borderBottom: 1, p: 1.5, borderColor: "#D1D1D1" }}>
+                  <h3>Questions 1</h3>
+                </Box>
+                <Box sx={{ p: 1.5 }}>
+                  <p>{problemData.question}</p>
+                  {showOptions(problemData.Options, 1)}
+                </Box>
+                <Box sx={{ p: 1.5 }}>
+                  <ThemeProvider theme={QuizTheme}>
+                    <Button variant="contained" color="dpink" fullWidth>
+                      Submit
+                    </Button>
+                  </ThemeProvider>
+                </Box>
               </Box>
-              <Box sx={{ p: 1.5 }}>
-                <p>{problemData.question}</p>
-                {showOptions(problemData.Options, 1)}
-              </Box>
-            </Box>
-            <Button variant="outlined">Submit</Button>
-          </>
-        ) : null}
-      </div>
+            </>
+          ) : null}
+        </div>
+      )}
     </HeaderHome>
   );
 }

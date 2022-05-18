@@ -16,6 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { LoadingButton } from "@mui/lab";
 import qbuddy from "../api/qbuddy";
+import Header from "./Header";
 
 import { registerAction } from "../actions/index";
 
@@ -71,119 +72,121 @@ const Register = (props) => {
   };
 
   return (
-    <div className="container">
-      <div className="row justify-content-center mt-2">
-        <div className="col-6">
-          {props.signUpMsg.errMsg != null ? (
-            <Alert severity="error">{props.signUpMsg.errMsg}</Alert>
-          ) : null}
-          <form onSubmit={handleSubmit(onSignUp)}>
-            <h1 className="text-center mb-4">Student Registartion</h1>
-            <div className="mt-2">
-              <TextField
-                fullWidth
-                error={errors.name?.type == "required" ? true : false}
-                variant="outlined"
-                label="Name"
-                id="name"
-                {...register("name")}
-                helperText={errors.name?.message}
-              />
-            </div>
-            <div className="mt-2">
-              <TextField
-                fullWidth
-                variant="outlined"
-                label="Address"
-                rows={2}
-                multiline
-                id="address"
-                error={errors.address?.type === "required" ? true : false}
-                {...register("address")}
-                helperText={errors.address?.message}
-              />
-            </div>
-            <div className="mt-2">
-              <TextField
-                fullWidth
-                variant="outlined"
-                label="Phone"
-                id="phone"
-                error={errors.phone?.type === "required" ? true : false}
-                {...register("phone")}
-                helperText={errors.phone?.message}
-              />
-            </div>
-            <div className="mt-2">
-              <FormControl fullWidth>
-                <InputLabel id="perlvl">Performance Level</InputLabel>
-                <Select
-                  id="perlvl"
-                  labelId="perlvl"
-                  label="Performace Level"
-                  error={errors.qclass?.type == "required" ? true : false}
-                  {...register("performance_lvl")}
-                  sx={{ marginBottom: 1 }}
+    <Header>
+      <div className="container">
+        <div className="row justify-content-center mt-2">
+          <div className="col-6">
+            {props.signUpMsg.errMsg != null ? (
+              <Alert severity="error">{props.signUpMsg.errMsg}</Alert>
+            ) : null}
+            <form onSubmit={handleSubmit(onSignUp)}>
+              <h1 className="text-center mb-4">Student Registartion</h1>
+              <div className="mt-2">
+                <TextField
+                  fullWidth
+                  error={errors.name?.type == "required" ? true : false}
+                  variant="outlined"
+                  label="Name"
+                  id="name"
+                  {...register("name")}
+                  helperText={errors.name?.message}
+                />
+              </div>
+              <div className="mt-2">
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Address"
+                  rows={2}
+                  multiline
+                  id="address"
+                  error={errors.address?.type === "required" ? true : false}
+                  {...register("address")}
+                  helperText={errors.address?.message}
+                />
+              </div>
+              <div className="mt-2">
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Phone"
+                  id="phone"
+                  error={errors.phone?.type === "required" ? true : false}
+                  {...register("phone")}
+                  helperText={errors.phone?.message}
+                />
+              </div>
+              <div className="mt-2">
+                <FormControl fullWidth>
+                  <InputLabel id="perlvl">Performance Level</InputLabel>
+                  <Select
+                    id="perlvl"
+                    labelId="perlvl"
+                    label="Performace Level"
+                    error={errors.qclass?.type == "required" ? true : false}
+                    {...register("performance_lvl")}
+                    sx={{ marginBottom: 1 }}
+                  >
+                    <MenuItem key="1" value="1">
+                      Easy
+                    </MenuItem>
+                    <MenuItem key="2" value="2">
+                      Medium
+                    </MenuItem>
+                    <MenuItem key="3" value="3">
+                      High
+                    </MenuItem>
+                  </Select>
+                  {errors.performance_lvl?.message ? (
+                    <FormHelperText error>
+                      {errors.performance_lvl.message}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+              </div>
+              <div>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Email"
+                  id="email"
+                  error={
+                    errors.email?.type === "required" ||
+                    errors.email?.type === "email"
+                      ? true
+                      : false
+                  }
+                  {...register("email")}
+                  helperText={errors.email?.message}
+                />
+              </div>
+              <div className="mt-2">
+                <TextField
+                  fullWidth
+                  type={"password"}
+                  variant="outlined"
+                  label="Password"
+                  id="password"
+                  error={errors.password?.type === "required" ? true : false}
+                  {...register("password")}
+                  helperText={errors.password?.message}
+                />
+              </div>
+              <div className="mt-2">
+                <LoadingButton
+                  type="submit"
+                  loading={registerLoad}
+                  variant="contained"
+                  sx={{ width: "100%", background: "#ea5455" }}
                 >
-                  <MenuItem key="1" value="1">
-                    Easy
-                  </MenuItem>
-                  <MenuItem key="2" value="2">
-                    Medium
-                  </MenuItem>
-                  <MenuItem key="3" value="3">
-                    High
-                  </MenuItem>
-                </Select>
-                {errors.performance_lvl?.message ? (
-                  <FormHelperText error>
-                    {errors.performance_lvl.message}
-                  </FormHelperText>
-                ) : null}
-              </FormControl>
-            </div>
-            <div>
-              <TextField
-                fullWidth
-                variant="outlined"
-                label="Email"
-                id="email"
-                error={
-                  errors.email?.type === "required" ||
-                  errors.email?.type === "email"
-                    ? true
-                    : false
-                }
-                {...register("email")}
-                helperText={errors.email?.message}
-              />
-            </div>
-            <div className="mt-2">
-              <TextField
-                fullWidth
-                type={"password"}
-                variant="outlined"
-                label="Password"
-                id="password"
-                error={errors.password?.type === "required" ? true : false}
-                {...register("password")}
-                helperText={errors.password?.message}
-              />
-            </div>
-            <div className="mt-2">
-              <LoadingButton
-                type="submit"
-                loading={registerLoad}
-                variant="contained"
-                sx={{ width: "100%", background: "#ea5455" }}
-              >
-                Submit
-              </LoadingButton>
-            </div>
-          </form>
+                  Submit
+                </LoadingButton>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </Header>
   );
 };
 

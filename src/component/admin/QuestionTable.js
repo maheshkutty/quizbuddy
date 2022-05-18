@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import "../../css/addQuestion.css";
 import { getClassesAction } from "../../actions/ClassesAction";
 import { getSubjectsAction } from "../../actions/SubjectsAction";
+import { problemAction } from "../../actions/ProblemsAction";
 import qbuddy from "../../api/qbuddy";
 import QuizTab from "./QuizTab";
 import * as yup from "yup";
@@ -45,6 +46,16 @@ function QuestionTable(props) {
     if (props.qclass.data.length === 0) {
       props.getClassesAction();
     }
+    if (props.problems.data.length == 0) {
+      console.log(props.userSession);
+      let payload = {
+        cid: 0,
+        sid: 0,
+        CHid: 0,
+        dificulty_lvl: "0",
+      };
+      props.problemAction(payload);
+    }
   }, []);
 
   useEffect(() => {
@@ -71,7 +82,7 @@ function QuestionTable(props) {
     setqChapter(event.target.value);
   };
 
-  const data = useMemo(() => props.qclass.data, [props.qclass.data]);
+  const data = useMemo(() => props.problems.data, [props.problems.data]);
   const columns = useMemo(
     () => [
       { Header: "Sr no.", accessor: "srno" },
@@ -81,8 +92,15 @@ function QuestionTable(props) {
           console.log(cell.row.original);
           return (
             <div>
-              <Link to="/admin/qstatus" state={{...cell.row.original, name: "What is partical"}}>
-                What is partical
+              <Link
+                to="/admin/qstatus"
+                state={{
+                  ...cell.row.original,
+                  name: cell.row.original.question,
+                  qid: cell.row.original.qid,
+                }}
+              >
+                {cell.row.original.question}
               </Link>
             </div>
           );
@@ -90,7 +108,7 @@ function QuestionTable(props) {
       },
       { Header: "Class", accessor: "Class" },
       { Header: "Subject", accessor: "Subject" },
-      { Header: "Diffculty", accessor: "Diffculty" },
+      { Header: "Diffculty", accessor: "dificulty_lvl" },
       {
         Header: "Action ",
         Cell: ({ cell }) => {
@@ -282,10 +300,12 @@ const mapStateToProps = (state) => {
   return {
     qsub: state.qsub,
     qclass: state.qclass,
+    problems: state.problems,
   };
 };
 
 export default connect(mapStateToProps, {
   getClassesAction,
   getSubjectsAction,
+  problemAction,
 })(QuestionTable);

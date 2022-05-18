@@ -18,15 +18,15 @@ function QuestionStatus() {
             </div>
             <div className="col">
               <p className="list">Subject</p>
-              <p>{state.Class}</p>
+              <p>{state.Subject}</p>
             </div>
             <div className="col">
               <p className="list">Chapter </p>
-              <p>{state.Class}</p>
+              <p>{state.Chapter}</p>
             </div>
             <div className="col">
               <p className="list">Diffculty </p>
-              <p>{state.Class}</p>
+              <p>{state.dificulty_lvl}</p>
             </div>
           </div>
         </div>

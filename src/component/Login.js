@@ -6,6 +6,7 @@ import { LoadingButton } from "@mui/lab";
 
 import { loginAction } from "../actions/index";
 import { useNavigate, Link } from "react-router-dom";
+import Header from "./Header";
 
 const Login = (props) => {
   let navigate = useNavigate();
@@ -36,54 +37,58 @@ const Login = (props) => {
   };
 
   return (
-    <div className="container">
-      <div className="row justify-content-center mt-2">
-        <div className="col-5">
-          {props.userSession.errMsg != null ? (
-            <Alert severity="error">{props.userSession.errMsg}</Alert>
-          ) : null}
-          <h1 className="text-center mb-4">Welcome Back</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mt-2">
-              <TextField
-                fullWidth
-                error={errors.email?.type === "required" ? true : false}
-                variant="outlined"
-                label="Email"
-                id="email"
-                {...register("email", { required: "Email is required" })}
-                helperText={errors.email?.message}
-              />
+    <Header>
+      <div className="container">
+        <div className="row justify-content-center mt-2">
+          <div className="col-5">
+            {props.userSession.errMsg != null ? (
+              <Alert severity="error">{props.userSession.errMsg}</Alert>
+            ) : null}
+            <h1 className="text-center mb-4">Welcome Back</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="mt-2">
+                <TextField
+                  fullWidth
+                  error={errors.email?.type === "required" ? true : false}
+                  variant="outlined"
+                  label="Email"
+                  id="email"
+                  {...register("email", { required: "Email is required" })}
+                  helperText={errors.email?.message}
+                />
+              </div>
+              <div className="mt-2">
+                <TextField
+                  fullWidth
+                  error={errors.password?.type === "required" ? true : false}
+                  type={"password"}
+                  variant="outlined"
+                  label="Password"
+                  id="password"
+                  helperText={errors.password?.message}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                />
+              </div>
+              <div className="mt-2">
+                <LoadingButton
+                  loading={loginLoad}
+                  type="submit"
+                  sx={{ width: "100%", background: "#2D4059" }}
+                  variant="contained"
+                >
+                  Submit
+                </LoadingButton>
+              </div>
+            </form>
+            <div className="mt-2 text-center">
+              <Link to="/admin/home">Go to Admin</Link>
             </div>
-            <div className="mt-2">
-              <TextField
-                fullWidth
-                error={errors.password?.type === "required" ? true : false}
-                type={"password"}
-                variant="outlined"
-                label="Password"
-                id="password"
-                helperText={errors.password?.message}
-                {...register("password", { required: "Password is required" })}
-              />
-            </div>
-            <div className="mt-2">
-              <LoadingButton
-                loading={loginLoad}
-                type="submit"
-                sx={{ width: "100%", background: "#2D4059" }}
-                variant="contained"
-              >
-                Submit
-              </LoadingButton>
-            </div>
-          </form>
-          <div className="mt-2 text-center">
-            <Link to="/admin/home">Go to Admin</Link>
           </div>
         </div>
       </div>
-    </div>
+    </Header>
   );
 };
 

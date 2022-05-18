@@ -19,7 +19,7 @@ const QuizTheme = createTheme({
       main: "#ec407a",
       darker: "#880d36",
       contrastText: "#fff",
-    },
+    }
   },
   components: {
     MuiListItemText: {

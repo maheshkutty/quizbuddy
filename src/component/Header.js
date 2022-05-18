@@ -34,17 +34,17 @@ function Header({ children }) {
           <div className="navbar-nav">
             <Nav onSelect={handleSelect}>
               <Nav.Link
-                eventKey="/login"
+                eventKey="/home"
                 className={
-                  activeNav == "/login" ? "headermenu active" : "headermenu"
+                  activeNav == "/home" ? "headermenu active" : "headermenu"
                 }
               >
                 Home
               </Nav.Link>
               <Nav.Link
-                eventKey="/login"
+                eventKey="/aboutus"
                 className={
-                  activeNav == "/login" ? "headermenu active" : "headermenu"
+                  activeNav == "/aboutus" ? "headermenu active" : "headermenu"
                 }
               >
                 About Us
@@ -67,53 +67,6 @@ function Header({ children }) {
               </Nav.Link>
             </Nav>
           </div>
-          {/* <div
-            className="collapse navbar-collapse justify-content-end"
-            id="navbarNavAltMarkup"
-          >
-            <div className="navbar-nav">
-            <Nav>
-              <a className="nav-link headermenu" aria-current="page">
-                Home
-              </a>
-              </Nav>
-              <a className="nav-link headermenu">About Us</a>
-              <div>
-                <Button
-                  type="submit"
-                  sx={{ marginLeft: 1, background: "#2D4059" }}
-                  onClick={() => onRegister()}
-                  variant="contained"
-                >
-                  Register
-                </Button>
-                <Button
-                  type="submit"
-                  sx={{
-                    marginLeft: 1,
-                    background: "#ffffff",
-                    color: "#ea5455",
-                  }}
-                  onClick={() => onLogin()}
-                  variant="contained"
-                >
-                  Login
-                </Button>
-                <Button
-                  type="submit"
-                  sx={{
-                    marginLeft: 1,
-                    background: "#ffffff",
-                    color: "#ea5455",
-                  }}
-                  onClick={() => navigate("/admin/home")}
-                  variant="contained"
-                >
-                  Admin
-                </Button>
-              </div>
-            </div>
-          </div> */}
         </div>
       </nav>
       {children}
