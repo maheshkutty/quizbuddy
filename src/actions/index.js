@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import qbuddy from "../api/qbuddy";
 
 export const loginAction = (profileData) => async (dispatch, getStates) => {
   const { email, password } = profileData;
@@ -17,6 +18,13 @@ export const loginAction = (profileData) => async (dispatch, getStates) => {
     storeMsg.email = data.user.email;
     storeMsg.accessToken = data.user.accessToken;
     storeMsg.uid = data.user.uid;
+    let sidData = await qbuddy.post(`/student/login?email=${email}`);
+    sidData = sidData.data;
+    console.log(sidData);
+    console.log(sidData.res[0].St_id);
+    if (sidData.status == "success") {
+      storeMsg.sid = sidData.res[0].St_id;
+    }
   } catch (error) {
     storeMsg.errMsg = "Invalid email and password!";
   }
@@ -52,4 +60,34 @@ export const registerAction = (profiledata) => async (dispatch, getStates) => {
     storeMsg.errMsg = "Error while creating account";
   }
   dispatch({ type: "SIGNUP_USER", payload: storeMsg });
+};
+
+export const getProfileAction = (payload) => async (dispatch, getStates) => {
+  try {
+    let response = {
+      email: "",
+      name: "",
+      phone: "",
+      points: "",
+      score: "",
+      perLvl: "",
+    };
+    console.log(payload);
+    let userData = await qbuddy.post(`/student/login?email=${payload.email}`);
+    userData = userData.data;
+    console.log(userData);
+    if (userData.status == "success") {
+      userData = userData.res[0];
+      response.email = userData.email;
+      response.name = userData.Name;
+      response.phone = userData.phone;
+      response.points = userData.points;
+      response.score = userData.Score;
+      response.perLvl = userData.Performance_lvl;
+      dispatch({ type: "profile", payload: response });
+    }
+  } catch (err) {
+    console.log(err);
+    dispatch({ type: "err_msg", payload: "Error while processing your req" });
+  }
 };

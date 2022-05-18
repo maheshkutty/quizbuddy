@@ -23,6 +23,7 @@ import Paper from "@mui/material/Paper";
 import "../css/addQuestion.css";
 import { getClassesAction } from "../actions/ClassesAction";
 import { getSubjectsAction } from "../actions/SubjectsAction";
+import { problemAction } from "../actions/ProblemsAction";
 import qbuddy from "../api/qbuddy";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -76,6 +77,16 @@ function ProblemList(props) {
     if (props.qclass.data.length === 0) {
       props.getClassesAction();
     }
+    if (props.problems.data.length == 0) {
+      console.log(props.userSession);
+      let payload = {
+        cid: 0,
+        sid: 0,
+        CHid: 0,
+        dificulty_lvl: "0",
+      };
+      props.problemAction(payload);
+    }
   }, []);
 
   useEffect(() => {
@@ -91,32 +102,55 @@ function ProblemList(props) {
     setqChapter("");
     setQChaptersList([]);
     setQsubList([...tempData]);
+    let payload = {
+      cid: event.target.value,
+      sid: 0,
+      CHid: 0,
+      dificulty_lvl: "0",
+    };
+    props.problemAction(payload);
   };
 
   const handelqSub = (event) => {
     setqSub(event.target.value);
     getChaptersList(event.target.value);
+    let payload = {
+      cid: qclass == "" ? 0 : qclass,
+      sid: event.target.value == "" ? 0 : event.target.value,
+      CHid: 0,
+      dificulty_lvl: "0",
+    };
+    props.problemAction(payload);
   };
 
   const handelqChapter = (event) => {
     setqChapter(event.target.value);
+    let payload = {
+      cid: qclass == "" ? 0 : qclass,
+      sid: event.target.value == "" ? 0 : event.target.value,
+      CHid: event.target.value == "" ? 0 : event.target.value,
+      dificulty_lvl: "0",
+    };
+    props.problemAction(payload);
   };
 
-  const data = useMemo(() => props.qclass.data, [props.qclass.data]);
+  const data = useMemo(() => props.problems.data, [props.problems.data]);
   const columns = useMemo(
     () => [
       { Header: "Sr no.", accessor: "srno" },
       {
         Header: "Name",
         Cell: ({ cell }) => {
-          console.log(cell.row.original);
+          console.log(cell);
           return (
             <div>
               <Link
-                to="/admin/qstatus"
-                state={{ ...cell.row.original, name: "What is partical" }}
+                to="/attemptproblem"
+                state={{
+                  qid: cell.row.original.qid,
+                }}
               >
-                What is partical
+                {cell.row.original.question}
               </Link>
             </div>
           );
@@ -124,20 +158,7 @@ function ProblemList(props) {
       },
       { Header: "Class", accessor: "Class" },
       { Header: "Subject", accessor: "Subject" },
-      { Header: "Diffculty", accessor: "Diffculty" },
-      {
-        Header: "Action ",
-        Cell: ({ cell }) => {
-          return (
-            <FontAwesomeIcon
-              icon="fa-trash"
-              fontSize="25px"
-              style={{ cursor: "pointer" }}
-              onClick={() => {}}
-            />
-          );
-        },
-      },
+      { Header: "Diffculty", accessor: "dificulty_lvl" },
     ],
     []
   );
@@ -184,6 +205,9 @@ function ProblemList(props) {
                   onChange={handelQclass}
                   sx={{ width: 200, background: "white" }}
                 >
+                  <MenuItem key="0" value="0">
+                    All
+                  </MenuItem>
                   {props.qclass.data.map((item) => (
                     <MenuItem key={item.Cid} value={item.Cid}>
                       {item.Class}
@@ -201,6 +225,9 @@ function ProblemList(props) {
                   onChange={handelqSub}
                   sx={{ width: 200 }}
                 >
+                  <MenuItem key="0" value="0">
+                    All
+                  </MenuItem>
                   {qsubList.map((item) => (
                     <MenuItem key={item.Sid} value={item.Sid}>
                       {item.Subject}
@@ -218,6 +245,9 @@ function ProblemList(props) {
                   onChange={handelqChapter}
                   sx={{ width: 200 }}
                 >
+                  <MenuItem key="0" value="0">
+                    All
+                  </MenuItem>
                   {qChaptersList.map((item) => (
                     <MenuItem key={item.CHid} value={item.CHid}>
                       {item.Chapter}
@@ -233,6 +263,9 @@ function ProblemList(props) {
                   label="Diffculty"
                   sx={{ width: 200 }}
                 >
+                  <MenuItem key="0" value="0">
+                    All
+                  </MenuItem>
                   <MenuItem key="1" value="1">
                     Easy
                   </MenuItem>
@@ -311,12 +344,15 @@ function ProblemList(props) {
 
 const mapStateToProps = (state) => {
   return {
+    userSession: state.userSession,
     qsub: state.qsub,
     qclass: state.qclass,
+    problems: state.problems,
   };
 };
 
 export default connect(mapStateToProps, {
   getClassesAction,
   getSubjectsAction,
+  problemAction,
 })(ProblemList);

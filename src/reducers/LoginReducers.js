@@ -1,5 +1,5 @@
 const LoginReducers = (
-  state = { uid: "", errMsg: null, accessToken: "", email: "" },
+  state = { uid: "", errMsg: null, accessToken: "", email: "", sid : "" },
   action
 ) => {
   switch (action.type) {

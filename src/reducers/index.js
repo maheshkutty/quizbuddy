@@ -4,6 +4,8 @@ import SignUpReducers from "./SignUpReducers";
 import ClassesReducers from "./ClassesReducers";
 import SubjectsReducers from "./SubjectsReducers";
 import ChapterReducers from "./ChapterReducers";
+import ProblemsReducers from "./ProblemsReducers";
+import ProfileReducers from "./ProfileReducers";
 
 export default combineReducers({
   replaceMe: () => null,
@@ -11,5 +13,7 @@ export default combineReducers({
   signUpMsg: SignUpReducers,
   qclass: ClassesReducers,
   qsub: SubjectsReducers,
-  qchapters: ChapterReducers
+  qchapters: ChapterReducers,
+  problems: ProblemsReducers,
+  profileData: ProfileReducers,
 });

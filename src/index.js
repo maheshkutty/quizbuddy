@@ -25,6 +25,7 @@ import QuestionStatus from "./component/admin/QuestionStatus";
 import ProblemList from "./component/ProblemList";
 import AttemptQuiz from "./component/AttemptQuiz";
 import Profile from "./component/Profile";
+import AttemptProblem from "./component/AttemptProblem";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
@@ -65,6 +66,7 @@ ReactDOM.render(
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/problems" element={<ProblemList />} />
         <Route path="/attemptquiz" element={<AttemptQuiz />} />
+        <Route path="/attemptproblem" element={<AttemptProblem />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin/home" element={<SideMenu />} />
         <Route path="/admin/classess" element={<AddClass />} />
