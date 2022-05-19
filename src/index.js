@@ -28,6 +28,7 @@ import Profile from "./component/Profile";
 import AttemptProblem from "./component/AttemptProblem";
 import HomePage from "./component/HomePage";
 import Aboutus from "./component/Aboutus";
+import AdminLogin from "./component/admin/AdminLogin";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
@@ -67,7 +68,9 @@ ReactDOM.render(
             </RequireAuth>
           }
         />
-        <Route path="/attemptquiz" element={<AttemptQuiz />} />
+        <Route path="/attemptquiz" element={<AttemptQuiz />}>
+          <Route path=":qid" element={<AttemptQuiz />} />
+        </Route>
         <Route path="/home" element={<HomePage />} />
         <Route path="/aboutus" element={<Aboutus />} />
         <Route
@@ -86,6 +89,7 @@ ReactDOM.render(
             </RequireAuth>
           }
         />
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/home" element={<SideMenu />} />
         <Route path="/admin/classess" element={<AddClass />} />
         <Route path="/admin/subjects" element={<AddSubjects />} />

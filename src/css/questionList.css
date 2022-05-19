@@ -7,6 +7,13 @@
     width: 36px;
     height: 36px;
     text-align: center;
+    margin: 0.2em;
+    cursor: pointer;
+}
+
+.qattempeted {
+    background-color: #5e93ff;
+    color: white;
 }
 
 .selectedAns {

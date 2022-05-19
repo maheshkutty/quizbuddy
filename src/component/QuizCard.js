@@ -15,13 +15,12 @@ import { useNavigate } from "react-router-dom";
 
 import QuizTheme from "../theme/appTheme";
 
-function QuizCard(props) {
-
+function QuizCard({ difficulty, timeInMins, noQuestions, quiz_id }) {
   const navigate = useNavigate();
 
   const onStartQuiz = () => {
-    navigate("/attemptquiz");
-  }
+    navigate(`/attemptquiz/${quiz_id}`);
+  };
 
   return (
     <Box sx={{ width: 250 }}>
@@ -40,24 +39,29 @@ function QuizCard(props) {
             }}
           />
           <Typography variant="h5">Personalized Quiz</Typography>
-          <Typography variant="list" >
+          <Typography variant="list">
             <ListItem sx={{ p: 0 }}>
               <KeyboardArrowRightIcon />
-              <ListItemText primary="Time: 90 mins" />
+              <ListItemText primary={"Time: " + timeInMins} />
             </ListItem>
             <ListItem sx={{ p: 0 }}>
               <KeyboardArrowRightIcon />
-              <ListItemText primary="Dfficulty: Medium" />
+              <ListItemText primary={"Dfficulty: " + difficulty} />
             </ListItem>
             <ListItem sx={{ p: 0 }}>
               <KeyboardArrowRightIcon />
-              <ListItemText primary="Questions: 20" />
+              <ListItemText primary={"Question: " + noQuestions} />
             </ListItem>
           </Typography>
         </CardContent>
         <CardActions>
           <ThemeProvider theme={QuizTheme}>
-            <Button fullWidth="true" variant="outlined" color="neutral" onClick={onStartQuiz}>
+            <Button
+              fullWidth="true"
+              variant="outlined"
+              color="neutral"
+              onClick={onStartQuiz}
+            >
               Start quiz
             </Button>
           </ThemeProvider>

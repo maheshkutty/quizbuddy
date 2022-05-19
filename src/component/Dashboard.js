@@ -25,6 +25,7 @@ import "../css/dashboard.css";
 import { connect } from "react-redux";
 import { getClassesAction } from "../actions/ClassesAction";
 import { getSubjectsAction } from "../actions/SubjectsAction";
+import { getQuizAction } from "../actions/QuizAction";
 import QuizTheme from "../theme/appTheme";
 import HeaderHome from "./HeaderHome";
 
@@ -74,6 +75,16 @@ function Dashboard(props) {
     console.log(classListTemp);
     setClassList(classListTemp);
   }, [props.qclass.data]);
+
+  useEffect(() => {
+    let payload = {
+      sid: props.userSession.sid == "" ? 0 : props.userSession.sid,
+      cid: 1,
+      subid: 1,
+      chid: 0,
+    };
+    props.getQuizAction(payload);
+  }, []);
 
   const handleClass = (event) => {
     const {
@@ -244,11 +255,16 @@ function Dashboard(props) {
           <div className="col-10">
             <div className="col">
               <h4 className="mb-3">Your personalized mock test</h4>
-              <QuizCard />
+              <QuizCard
+                quiz_id={props.quizData.quizList?.quiz_id}
+                timeInMins={props.quizData.quizList?.timeInMins}
+                noQuestions={props.quizData.quizList?.noQuestions}
+                difficulty={props.quizData.quizList?.difficulty}
+              />
             </div>
             <div className="col m-2">
               <h4 className="mt-5 mb-3">All quiz</h4>
-              <QuizCard />
+              {/* <QuizCard /> */}
             </div>
           </div>
         </div>
@@ -259,6 +275,8 @@ function Dashboard(props) {
 
 const mapStateToProps = (state) => {
   return {
+    quizData: state.quizData,
+    userSession: state.userSession,
     qsub: state.qsub,
     qclass: state.qclass,
   };
@@ -267,4 +285,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   getClassesAction,
   getSubjectsAction,
+  getQuizAction,
 })(Dashboard);

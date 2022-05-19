@@ -1,88 +1,126 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import "../css/questionList.css";
+import { useLocation } from "react-router-dom";
 
-function QuestionDetails({ history }) {
-  const [questionDetailsData, setQuestionDetailsData] = useState([
-    {
-      qid: "1",
-      question: "What is into function ?",
-      q_type: "MCQ",
-      diff_lvl: "mid",
-      ans_id: [4],
-      show: true,
-      time: 0,
-      options: [
-        {
-          id: "1",
-          type: "text",
-          value: "one to one",
-          fileImg: "",
-          isAns: false,
-        },
-        {
-          id: "2",
-          type: "text",
-          value: "one to many",
-          fileImg: "",
-          isAns: false,
-        },
-        {
-          type: "text",
-          value: "many to many",
-          fileImg: "",
-          id: 3,
-          isAns: false,
-        },
-        {
-          type: "text",
-          value: "many to one",
-          fileImg: "",
-          id: 4,
-          isAns: false,
-        },
-      ],
-    },
-    {
-      qid: "1",
-      question: "Who am i ?",
-      q_type: "MCQ",
-      diff_lvl: "mid",
-      ans_id: [4],
-      show: false,
-      time: 0,
-      options: [
-        {
-          id: "1",
-          type: "text",
-          value: "one to one",
-          fileImg: "",
-          isAns: false,
-        },
-        {
-          id: "2",
-          type: "text",
-          value: "one to many",
-          fileImg: "",
-          isAns: false,
-        },
-        {
-          type: "text",
-          value: "many to many",
-          fileImg: "",
-          id: 3,
-          isAns: false,
-        },
-        {
-          type: "text",
-          value: "many to one",
-          fileImg: "",
-          id: 4,
-          isAns: false,
-        },
-      ],
-    },
-  ]);
+function QuestionDetails({questionDetailsData, setQuestionDetailsData}) {
+  useEffect(() => {
+    if (questionDetailsData != undefined) {
+      // console.log(questionDetailsData);
+      // let data = questionDetailsData;
+      // console.log(data);
+      // data = data.map((item) => {
+      //   item.show = false;
+      //   return item;
+      // });
+      // data[0].show = true;
+      // setQuestionDetailsData([...data]);
+    }
+  }, []);
+
+  // const [questionDetailsData, setQuestionDetailsData] = useState([
+  //   {
+  //     qid: 164,
+  //     In_id: 1,
+  //     CHid: 3,
+  //     show: true,
+  //     question: "If z is a complex number such that z = - z, then",
+  //     type: "MCQ",
+  //     dificulty_lvl: "1",
+  //     contains_img: 0,
+  //     Options: [
+  //       { Oid: 628, option: "z is purely real", type: 0 },
+  //       { Oid: 629, option: "z is purely imaginary", type: 0 },
+  //       { Oid: 630, option: "z is any complex number", type: 0 },
+  //       {
+  //         Oid: 631,
+  //         option: "real part of z is same as its imaginary part",
+  //         type: 0,
+  //       },
+  //     ],
+  //   },
+  // ]);
+
+  // const [questionDetailsData, setQuestionDetailsData] = useState([
+  //   {
+  //     qid: "1",
+  //     question: "What is into function ?",
+  //     q_type: "MCQ",
+  //     diff_lvl: "mid",
+  //     ans_id: [4],
+  //     show: true,
+  //     time: 0,
+  //     Options: [
+  //       {
+  //         id: "1",
+  //         type: "text",
+  //         value: "one to one",
+  //         fileImg: "",
+  //         isAns: false,
+  //       },
+  //       {
+  //         id: "2",
+  //         type: "text",
+  //         value: "one to many",
+  //         fileImg: "",
+  //         isAns: false,
+  //       },
+  //       {
+  //         type: "text",
+  //         value: "many to many",
+  //         fileImg: "",
+  //         id: 3,
+  //         isAns: false,
+  //       },
+  //       {
+  //         type: "text",
+  //         value: "many to one",
+  //         fileImg: "",
+  //         id: 4,
+  //         isAns: false,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     qid: "1",
+  //     question: "Who am i ?",
+  //     q_type: "MCQ",
+  //     diff_lvl: "mid",
+  //     ans_id: [4],
+  //     show: false,
+  //     time: 0,
+  //     Options: [
+  //       {
+  //         id: "1",
+  //         type: "text",
+  //         value: "one to one",
+  //         fileImg: "",
+  //         isAns: false,
+  //       },
+  //       {
+  //         id: "2",
+  //         type: "text",
+  //         value: "one to many",
+  //         fileImg: "",
+  //         isAns: false,
+  //       },
+  //       {
+  //         type: "text",
+  //         value: "many to many",
+  //         fileImg: "",
+  //         id: 3,
+  //         isAns: false,
+  //       },
+  //       {
+  //         type: "text",
+  //         value: "many to one",
+  //         fileImg: "",
+  //         id: 4,
+  //         isAns: false,
+  //       },
+  //     ],
+  //   },
+  // ]);
 
   const [intervalId, setIntervalId] = useState(-1);
 
@@ -155,15 +193,15 @@ function QuestionDetails({ history }) {
 
   const selectAns = (a, b) => {
     const qtempdata = questionDetailsData;
-    qtempdata[a].options = qtempdata[a].options.map((item) => {
+    qtempdata[a].Options = qtempdata[a].Options.map((item) => {
       return { ...item, isAns: false };
     });
-    qtempdata[a].options[b].isAns = true;
+    qtempdata[a].Options[b].isAns = true;
     setQuestionDetailsData([...qtempdata]);
   };
 
-  const showOptions = (options, j) => {
-    return options.map((item, index) => {
+  const showOptions = (Options, j) => {
+    return Options.map((item, index) => {
       return (
         <Box
           key={index}
@@ -186,7 +224,7 @@ function QuestionDetails({ history }) {
           >
             {String.fromCharCode(index + 65)}
           </span>
-          <span>{item.value}</span>
+          <span>{item.option}</span>
         </Box>
       );
     });
@@ -213,7 +251,7 @@ function QuestionDetails({ history }) {
                 </Box>
                 <Box sx={{ p: 1.5 }}>
                   <p>{curr.question}</p>
-                  {showOptions(curr.options, i)}
+                  {showOptions(curr.Options, i)}
                 </Box>
               </Box>
               <Box

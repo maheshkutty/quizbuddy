@@ -3,12 +3,13 @@ import { Box, Button } from "@mui/material";
 import AlarmIcon from "@mui/icons-material/Alarm";
 
 class TimeCounter extends React.Component {
-  constructor() {
-    super();
-    this.state = { time: {}, seconds: 100 };
+  constructor(props) {
+    super(props);
+    this.state = { time: {}, seconds: this.props.mins * 60 };
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
+    console.log(this.props.mins * 60);
   }
 
   secondsToTime(secs) {

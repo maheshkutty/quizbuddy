@@ -19,6 +19,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Modal } from "react-bootstrap";
 
 import "../css/addQuestion.css";
 import { getClassesAction } from "../actions/ClassesAction";
@@ -31,6 +32,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useTable, usePagination } from "react-table";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderHome from "./HeaderHome";
+import Result from "./Result";
 
 const schema = yup.object({
   name: yup.string().required("Name is required"),
@@ -65,6 +67,7 @@ function ProblemList(props) {
   const [qclass, setQclass] = useState("");
   const [qSub, setqSub] = useState(1);
   const [qChapter, setqChapter] = useState("");
+  const [show, setShow] = useState(false);
 
   const [qChaptersList, setQChaptersList] = useState([]);
   const [qsubList, setQsubList] = useState([]);
@@ -188,10 +191,49 @@ function ProblemList(props) {
     }
   };
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <HeaderHome>
+      <Modal
+        dialogClassName="modal-100w"
+        aria-labelledby="example-custom-modal-styling-title"
+        show={show}
+        onHide={handleClose}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-custom-modal-styling-title">
+            Result
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Result />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="contained"
+            className="m-1"
+            color="error"
+            onClick={handleClose}
+          >
+            Close
+          </Button>
+          <Button
+            variant="outlined"
+            className="m-1"
+            color="success"
+            type="submit"
+          >
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div className="container">
         <div className="col m-2">
+          <Button variant="contained" onClick={handleShow}>
+            Show Model
+          </Button>
           <Box component={Paper} sx={{ mb: 1, p: 2 }}>
             <Typography>Filter by</Typography>
             <div className="d-flex">

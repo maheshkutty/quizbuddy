@@ -44,3 +44,54 @@ Content-Type: application/json
         }
     ]
 }
+
+###
+
+POST https://2m0x0d.deta.dev/admin/create_question 
+Content-Type: application/json
+
+{
+  "classid": "1",
+  "sub_id": "1",
+  "chap_id": "2",
+  "questions": [
+    {
+      "question": "If X = {4n -3n- l :n eN} and Y = {9(n- l):ne N}, where N is the set of natural numbers, then X u Y is equal to",
+      "q_type": "MCQ",
+      "diff_lvl": "1",
+      "ans_id": [
+        4
+      ],
+      "options": [
+        {
+          "id": 1,
+          "type": "text",
+          "value": "N",
+          "isAns": false,
+          "fileImg": ""
+        },
+        {
+          "id": 2,
+          "type": "text",
+          "value": "Y-X",
+          "isAns": false,
+          "fileImg": ""
+        },
+        {
+          "id": 3,
+          "type": "text",
+          "value": "X",
+          "isAns": false,
+          "fileImg": ""
+        },
+        {
+          "id": 4,
+          "type": "text",
+          "value": "Y",
+          "isAns": true,
+          "fileImg": ""
+        }
+      ]
+    }
+  ]
+}

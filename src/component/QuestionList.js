@@ -4,17 +4,45 @@ import { ThemeProvider } from "@mui/material/styles";
 import QuizTheme from "../theme/appTheme";
 import "../css/questionList.css";
 
-function QuestionsList() {
+function QuestionsList({ setQuestionDetailsData, questionDetailsData }) {
+  const navigateToQ = (i) => {
+    let data = questionDetailsData;
+    data = data.map((item) => {
+      item.show = false;
+      return item;
+    });
+    data[i].show = true;
+    setQuestionDetailsData(data);
+  };
+
   return (
     <Box
-      sx={{ border: 1, p: 0, borderColor: "#D1D1D1", borderRadius: 1, m: 2 }}
+      sx={{ border: 1, p: 0, borderColor: "#D1D1D1", borderRadius: 1, mt: 2 }}
       className="sticky-top"
     >
       <Box sx={{ borderBottom: 1, p: 1.5, borderColor: "#D1D1D1" }}>
         <h3>Questions Analysis</h3>
       </Box>
       <Box sx={{ p: 1.5 }}>
-        <p className="qComponent">1</p>
+        <div className="row m-1">
+          {questionDetailsData.map((item, i) => {
+            if (!item.show)
+              return (
+                <span onClick={() => navigateToQ(i)} className="qComponent">
+                  {item.srno}
+                </span>
+              );
+            else
+              return (
+                <span
+                  onClick={() => navigateToQ(i)}
+                  className="qComponent qattempeted"
+                >
+                  {item.srno}
+                </span>
+              );
+          })}
+        </div>
       </Box>
       <Box>
         <ThemeProvider theme={QuizTheme}>

@@ -6,6 +6,7 @@ import SubjectsReducers from "./SubjectsReducers";
 import ChapterReducers from "./ChapterReducers";
 import ProblemsReducers from "./ProblemsReducers";
 import ProfileReducers from "./ProfileReducers";
+import QuizReducers from "./QuizReducers";
 
 export default combineReducers({
   replaceMe: () => null,
@@ -16,4 +17,5 @@ export default combineReducers({
   qchapters: ChapterReducers,
   problems: ProblemsReducers,
   profileData: ProfileReducers,
+  quizData: QuizReducers,
 });
