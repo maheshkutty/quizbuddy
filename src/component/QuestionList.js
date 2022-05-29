@@ -4,7 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import QuizTheme from "../theme/appTheme";
 import "../css/questionList.css";
 
-function QuestionsList({ setQuestionDetailsData, questionDetailsData }) {
+function QuestionsList({ setQuestionDetailsData, questionDetailsData, submitQuiz }) {
   const navigateToQ = (i) => {
     let data = questionDetailsData;
     data = data.map((item) => {
@@ -50,6 +50,7 @@ function QuestionsList({ setQuestionDetailsData, questionDetailsData }) {
             fullWidth="true"
             size="large"
             variant="contained"
+            onClick={submitQuiz}
             sx={{
               backgroundImage:
                 "linear-gradient(to right, #ea5455, #c1426c, #8c3e73, #563966, #2b2e4a)",

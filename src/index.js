@@ -29,6 +29,7 @@ import AttemptProblem from "./component/AttemptProblem";
 import HomePage from "./component/HomePage";
 import Aboutus from "./component/Aboutus";
 import AdminLogin from "./component/admin/AdminLogin";
+import AllResult from "./component/AllResult";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
@@ -86,6 +87,14 @@ ReactDOM.render(
           element={
             <RequireAuth>
               <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/result"
+          element={
+            <RequireAuth>
+              <AllResult />
             </RequireAuth>
           }
         />

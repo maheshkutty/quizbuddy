@@ -236,7 +236,7 @@ function ProblemList(props) {
           </Button>
           <Box component={Paper} sx={{ mb: 1, p: 2 }}>
             <Typography>Filter by</Typography>
-            <div className="d-flex">
+            <div className="col">
               <FormControl sx={{ m: 1 }} size="small">
                 <InputLabel id="Classes">Classes</InputLabel>
                 <Select

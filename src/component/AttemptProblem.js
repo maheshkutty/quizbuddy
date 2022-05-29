@@ -5,6 +5,7 @@ import qbuddy from "../api/qbuddy";
 import HeaderHome from "./HeaderHome";
 import "../css/questionList.css";
 import QuizTheme from "../theme/appTheme";
+import Loader from "./utils/Loader";
 
 function AttemptProblem(props) {
   let { state } = useLocation();
@@ -59,6 +60,14 @@ function AttemptProblem(props) {
       );
     });
   };
+
+  if (problemData == null) {
+    return (
+      <HeaderHome>
+        <Loader color="#ec407a" />
+      </HeaderHome>
+    );
+  }
 
   return (
     <HeaderHome>

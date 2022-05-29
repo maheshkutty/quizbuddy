@@ -5,6 +5,9 @@ import { connect } from "react-redux";
 import HeaderHome from "./HeaderHome";
 import "../css/profile.css";
 import { getProfileAction } from "../actions/index";
+import Logout from "./Logout";
+import Loader from "./utils/Loader";
+import GrowthChart from "./GrowthChart";
 
 function Profile(props) {
   useEffect(() => {
@@ -15,6 +18,14 @@ function Profile(props) {
       props.getProfileAction({ email: props.userSession.email });
     }
   }, []);
+
+  if (props.profileData.email == "") {
+    return (
+      <HeaderHome>
+        <Loader color="#ec407a" />
+      </HeaderHome>
+    );
+  }
 
   return (
     <HeaderHome>
@@ -54,7 +65,11 @@ function Profile(props) {
             <div className="sectionstyle">
               <div className="row">
                 <div className="col headertext">Performace</div>
+                <GrowthChart />
               </div>
+            </div>
+            <div className="sectionstyle d-flex justify-content-center">
+              <Logout />
             </div>
           </div>
         </div>

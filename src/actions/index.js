@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import qbuddy from "../api/qbuddy";
@@ -89,5 +90,22 @@ export const getProfileAction = (payload) => async (dispatch, getStates) => {
   } catch (err) {
     console.log(err);
     dispatch({ type: "err_msg", payload: "Error while processing your req" });
+  }
+};
+
+export const logoutAction = (payload) => async (dispatch) => {
+  try {
+    const data = await signOut(auth);
+    console.log(data);
+    const response = {
+      uid: "",
+      errMsg: null,
+      accessToken: "",
+      email: "",
+      sid: "",
+    };
+    dispatch({ type: "LOGIN_USER", payload: response });
+  } catch (err) {
+    console.log(err);
   }
 };

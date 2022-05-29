@@ -7,6 +7,7 @@ import QuestionDetails from "./QuestionDetails";
 import QuestionsList from "./QuestionList";
 import TimeCounter from "./TimeCounter";
 import { getQuizProblemsAction } from "../actions/QuizAction";
+import Loader from "./utils/Loader";
 
 function AttemptQuiz(props) {
   const [questionDetailsData, setQuestionDetailsData] = useState([]);
@@ -26,6 +27,7 @@ function AttemptQuiz(props) {
       console.log(data);
       data = data.map((item) => {
         item.show = false;
+        item.time = 0;
         return item;
       });
       data[0].show = true;
@@ -33,9 +35,33 @@ function AttemptQuiz(props) {
     }
   }, [props.quizData.questions]);
 
-  const submitQuiz = () => {
-    
+  const getTrueAns = (options) => {
+    let aid = [];
+    for (let option of options) {
+      if (option.isAns) aid.push(option.Oid);
+    }
+    return aid;
   };
+
+  const submitQuiz = () => {
+    let payload = {
+      sid: props.userSession.sid == "" ? 0 : props.userSession.sid,
+      qid: params.qid,
+      questions: [],
+    };
+    questionDetailsData.forEach((item) => {
+      payload.questions.push({
+        qid: item.qid,
+        aid: getTrueAns(item.Options),
+        time: item.time,
+      });
+    });
+    console.log(payload);
+  };
+
+  if (questionDetailsData.length == 0) {
+    return <Loader color="#ec407a" />;
+  }
 
   return (
     <div className="container">
@@ -73,6 +99,7 @@ function AttemptQuiz(props) {
         <div className="col-4 sticky-top">
           {questionDetailsData.length == 0 ? null : (
             <QuestionsList
+              submitQuiz={submitQuiz}
               setQuestionDetailsData={setQuestionDetailsData}
               questionDetailsData={questionDetailsData}
             />

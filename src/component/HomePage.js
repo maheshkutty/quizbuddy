@@ -7,7 +7,7 @@ function HomePage() {
     <Header>
       <div className="container mt-5">
         <div
-          className="row justify-content-center align-items-center"
+          className="row justify-content-center"
           style={{
             background:
               "linear-gradient(0deg,rgba(10,208,244,.12) 7.19%,hsla(0,0%,100%,0) 104.33%)",
@@ -37,38 +37,41 @@ function HomePage() {
             <img src="home.png" />
           </div>
         </div>
-        <div className="row">
+        <div className="row justify-content-center">
           <h3 class="text-center" style={{ marginBlock: "1em" }}>
             Why Choose QuizBuddy Exam Prep?
           </h3>
           <div class="col" style={{ marginInline: "5em" }}>
-            <div class="d-flex justify-content-between">
-              <div class="d-flex flex-column align-items-center w-30">
+            <div class="row justify-content-center">
+              <div class="col text-center">
                 <img
                   src="https://grdp.co/cdn-cgi/image/quality=100,width=200,f=auto/https://gs-post-images.grdp.co/2021/8/group-6-2x-img1629283053211-98.png-rs-high-webp.png"
-                  class="w4-2-l h4-l w3 h2-5 mb3 "
+                  class="mb-3"
+                  style={{ width: "12em" }}
                   alt="Online Classroom Program"
                 />
-                <p class="mv0 primary f6 f3-l fw7-l fw5 tc">
-                  Online JEE Main and NEET Quizzes
-                </p>
-                <p class="mv0 f5 fw7 tc dn db-l">by Top Faculty</p>
+                <div>
+                  <p>Online JEE Main and NEET Quizzes</p>
+                  <p>by Top Faculty</p>
+                </div>
               </div>
-              <div class="d-flex flex-column align-items-center w-30">
+              <div class="col text-center">
                 <img
                   src="https://grdp.co/cdn-cgi/image/quality=100,width=200,f=auto/https://gs-post-images.grdp.co/2021/8/illustrations-live-courses-2x-img1629272458441-51.png-rs-high-webp.png"
-                  class="w4-2-l h4-l w3 h2-5 mb3 mh2 mh4-l"
+                  class="mb-3 "
                   alt="Comprehensive Study Material"
                 />
-                <p class="mv0 primary f6 f3-l fw7-l fw5 tc">
-                  Comprehensive Problems
-                </p>
-                <p class="mv0 f5 fw7 tc dn db-l">for All Exams</p>
+                <div>
+                  <p class="mv0 primary f6 f3-l fw7-l fw5 tc">
+                    Comprehensive Problems
+                  </p>
+                  <p class="mv0 f5 fw7 tc dn db-l">for All Exams</p>
+                </div>
               </div>
-              <div class="d-flex flex-column align-items-center w-30">
+              <div class="col text-center">
                 <img
                   src="https://grdp.co/cdn-cgi/image/quality=100,width=200,f=auto/https://gs-post-images.grdp.co/2021/8/group-19-woman-mask-2-2x-img1629283123665-66.png-rs-high-webp.png"
-                  class="w4-2-l h4-l w3 h2-5 mb3 "
+                  class="mb-3"
                   alt="Latest Pattern Test Series"
                 />
                 <p class="mv0 primary f6 f3-l fw7-l fw5 tc">

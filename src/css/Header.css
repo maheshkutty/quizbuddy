@@ -1,17 +1,17 @@
-.brandstyle {
+#brandstyle {
   color: #EA5455;
   font-weight: bold;
 }
 
-.headermenu {
+#headermenu {
   color: #333333;
 }
 
-.active {
+#active {
   color: #EA5455;
 }
 
-.headermenu:hover {
+#headermenu:hover {
   color: #EA5455;
 }
 
