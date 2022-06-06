@@ -8,6 +8,7 @@ import { getProfileAction } from "../actions/index";
 import Logout from "./Logout";
 import Loader from "./utils/Loader";
 import GrowthChart from "./GrowthChart";
+import QPieChart from "./QPieChart";
 
 function Profile(props) {
   useEffect(() => {
@@ -64,8 +65,13 @@ function Profile(props) {
             </div>
             <div className="sectionstyle">
               <div className="row">
-                <div className="col headertext">Performace</div>
-                <GrowthChart />
+                <p className="headertext">Performace</p>
+                <div className="col">
+                  <GrowthChart />
+                </div>
+                <div className="col">
+                  <QPieChart />
+                </div>
               </div>
             </div>
             <div className="sectionstyle d-flex justify-content-center">

@@ -67,8 +67,6 @@ function ProblemList(props) {
   const [qclass, setQclass] = useState("");
   const [qSub, setqSub] = useState(1);
   const [qChapter, setqChapter] = useState("");
-  const [show, setShow] = useState(false);
-
   const [qChaptersList, setQChaptersList] = useState([]);
   const [qsubList, setQsubList] = useState([]);
   const navigate = useNavigate();
@@ -81,7 +79,6 @@ function ProblemList(props) {
       props.getClassesAction();
     }
     if (props.problems.data.length == 0) {
-      console.log(props.userSession);
       let payload = {
         cid: 0,
         sid: 0,
@@ -144,7 +141,7 @@ function ProblemList(props) {
       {
         Header: "Name",
         Cell: ({ cell }) => {
-          console.log(cell);
+          //console.log(cell);
           return (
             <div>
               <Link
@@ -191,49 +188,10 @@ function ProblemList(props) {
     }
   };
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   return (
     <HeaderHome>
-      <Modal
-        dialogClassName="modal-100w"
-        aria-labelledby="example-custom-modal-styling-title"
-        show={show}
-        onHide={handleClose}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-custom-modal-styling-title">
-            Result
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Result />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="contained"
-            className="m-1"
-            color="error"
-            onClick={handleClose}
-          >
-            Close
-          </Button>
-          <Button
-            variant="outlined"
-            className="m-1"
-            color="success"
-            type="submit"
-          >
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
       <div className="container">
         <div className="col m-2">
-          <Button variant="contained" onClick={handleShow}>
-            Show Model
-          </Button>
           <Box component={Paper} sx={{ mb: 1, p: 2 }}>
             <Typography>Filter by</Typography>
             <div className="col">

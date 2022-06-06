@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Box, Button, ThemeProvider } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import qbuddy from "../api/qbuddy";
 import HeaderHome from "./HeaderHome";
 import "../css/questionList.css";
 import QuizTheme from "../theme/appTheme";
 import Loader from "./utils/Loader";
+import { connect } from "react-redux";
+import { Modal } from "react-bootstrap";
+import Result from "./Result";
 
-function AttemptProblem(props) {
+function AttemptProblem({ userSession }) {
   let { state } = useLocation();
   let [problemData, setProblemData] = useState(null);
+  const [show, setShow] = useState(false);
+  const [resultData, setResultData] = useState({ score: 0, total: 10 });
+  const [resultLoad, setResultLoad] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     async function callProblemDetails() {
       let qid = state.qid;
       let response = await qbuddy.post(`/student/question?id=${qid}`);
       response = response.data;
-      console.log(response.res[0]);
       setProblemData(response.res[0]);
     }
     callProblemDetails();
@@ -29,6 +38,35 @@ function AttemptProblem(props) {
     });
     qtempdata.Options[b].isAns = true;
     setProblemData({ ...qtempdata });
+  };
+
+  const checkAns = () => {
+    for (let item of problemData.Options) {
+      if (item.isAns) return item.Oid;
+    }
+    return -1;
+  };
+
+  const showAns = async () => {
+    let ansId = checkAns();
+    if (ansId != -1) {
+      setResultLoad(true);
+      const payload = {
+        qid: problemData.qid,
+        ansid: checkAns(),
+        timetaken: 20,
+        sid: userSession.sid,
+      };
+      let response = await qbuddy.post("/student/attemptquestion", payload);
+      response = response.data;
+      let result = {
+        score: response.res.result == "true" ? 10 : 0,
+        total: 10,
+      };
+      setResultData(result);
+      handleShow();
+      setResultLoad(false);
+    }
   };
 
   const showOptions = (options, j) => {
@@ -71,6 +109,39 @@ function AttemptProblem(props) {
 
   return (
     <HeaderHome>
+      <Modal
+        dialogClassName="modal-100w"
+        aria-labelledby="example-custom-modal-styling-title"
+        show={show}
+        onHide={handleClose}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-custom-modal-styling-title">
+            Result
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Result score={resultData.score} total={resultData.total} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="contained"
+            className="m-1"
+            color="error"
+            onClick={handleClose}
+          >
+            Close
+          </Button>
+          <Button
+            variant="outlined"
+            className="m-1"
+            color="success"
+            type="submit"
+          >
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
       {state == null ? (
         <div class="d-flex justify-content-center align-items-center mt-5">
           <h2>Error while loading page</h2>
@@ -98,9 +169,15 @@ function AttemptProblem(props) {
                 </Box>
                 <Box sx={{ p: 1.5 }}>
                   <ThemeProvider theme={QuizTheme}>
-                    <Button variant="contained" color="dpink" fullWidth>
+                    <LoadingButton
+                      variant="contained"
+                      color="dpink"
+                      loading={resultLoad}
+                      onClick={showAns}
+                      fullWidth
+                    >
                       Submit
-                    </Button>
+                    </LoadingButton>
                   </ThemeProvider>
                 </Box>
               </Box>
@@ -112,4 +189,10 @@ function AttemptProblem(props) {
   );
 }
 
-export default AttemptProblem;
+const mapStateToProps = (state) => {
+  return {
+    userSession: state.userSession,
+  };
+};
+
+export default connect(mapStateToProps)(AttemptProblem);

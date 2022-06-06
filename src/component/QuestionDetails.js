@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import "../css/questionList.css";
 import { useLocation } from "react-router-dom";
+import TimeCounter from "./TimeCounter";
 
-function QuestionDetails({questionDetailsData, setQuestionDetailsData}) {
+function QuestionDetails({ questionDetailsData, setQuestionDetailsData }) {
   useEffect(() => {
     if (questionDetailsData != undefined) {
       // console.log(questionDetailsData);
@@ -36,87 +37,6 @@ function QuestionDetails({questionDetailsData, setQuestionDetailsData}) {
   //         Oid: 631,
   //         option: "real part of z is same as its imaginary part",
   //         type: 0,
-  //       },
-  //     ],
-  //   },
-  // ]);
-
-  // const [questionDetailsData, setQuestionDetailsData] = useState([
-  //   {
-  //     qid: "1",
-  //     question: "What is into function ?",
-  //     q_type: "MCQ",
-  //     diff_lvl: "mid",
-  //     ans_id: [4],
-  //     show: true,
-  //     time: 0,
-  //     Options: [
-  //       {
-  //         id: "1",
-  //         type: "text",
-  //         value: "one to one",
-  //         fileImg: "",
-  //         isAns: false,
-  //       },
-  //       {
-  //         id: "2",
-  //         type: "text",
-  //         value: "one to many",
-  //         fileImg: "",
-  //         isAns: false,
-  //       },
-  //       {
-  //         type: "text",
-  //         value: "many to many",
-  //         fileImg: "",
-  //         id: 3,
-  //         isAns: false,
-  //       },
-  //       {
-  //         type: "text",
-  //         value: "many to one",
-  //         fileImg: "",
-  //         id: 4,
-  //         isAns: false,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     qid: "1",
-  //     question: "Who am i ?",
-  //     q_type: "MCQ",
-  //     diff_lvl: "mid",
-  //     ans_id: [4],
-  //     show: false,
-  //     time: 0,
-  //     Options: [
-  //       {
-  //         id: "1",
-  //         type: "text",
-  //         value: "one to one",
-  //         fileImg: "",
-  //         isAns: false,
-  //       },
-  //       {
-  //         id: "2",
-  //         type: "text",
-  //         value: "one to many",
-  //         fileImg: "",
-  //         isAns: false,
-  //       },
-  //       {
-  //         type: "text",
-  //         value: "many to many",
-  //         fileImg: "",
-  //         id: 3,
-  //         isAns: false,
-  //       },
-  //       {
-  //         type: "text",
-  //         value: "many to one",
-  //         fileImg: "",
-  //         id: 4,
-  //         isAns: false,
   //       },
   //     ],
   //   },
@@ -247,7 +167,14 @@ function QuestionDetails({questionDetailsData, setQuestionDetailsData}) {
                 }}
               >
                 <Box sx={{ borderBottom: 1, p: 1.5, borderColor: "#D1D1D1" }}>
-                  <h3>Questions {i + 1}</h3>
+                  <div className="row">
+                    <div className="col-5">
+                      <h3>Questions {i + 1}</h3>
+                    </div>
+                    <div className="col">
+                      <TimeCounter mins="2" />
+                    </div>
+                  </div>
                 </Box>
                 <Box sx={{ p: 1.5 }}>
                   <p>{curr.question}</p>
