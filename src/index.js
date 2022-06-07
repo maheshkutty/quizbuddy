@@ -31,6 +31,7 @@ import Aboutus from "./component/Aboutus";
 import AdminLogin from "./component/admin/AdminLogin";
 import AllResult from "./component/AllResult";
 import QuizResult from "./component/QuizResult";
+import AdminAuth from "./component/admin/AdminAuth";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
@@ -95,13 +96,62 @@ ReactDOM.render(
           }
         />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/home" element={<SideMenu />} />
-        <Route path="/admin/classess" element={<AddClass />} />
-        <Route path="/admin/subjects" element={<AddSubjects />} />
-        <Route path="/admin/chapters" element={<AddChapters />} />
-        <Route path="/admin/questions" element={<QuestionTable />} />
-        <Route path="/admin/addquestions" element={<AddQuestions />} />
-        <Route path="/admin/qstatus" element={<QuestionStatus />} />
+        <Route
+          path="/admin/home"
+          element={
+            <AdminAuth>
+              <SideMenu />
+            </AdminAuth>
+          }
+        />
+        <Route
+          path="/admin/classess"
+          element={
+            <AdminAuth>
+              <AddClass />
+            </AdminAuth>
+          }
+        />
+        <Route
+          path="/admin/subjects"
+          element={
+            <AdminAuth>
+              <AddSubjects />
+            </AdminAuth>
+          }
+        />
+        <Route
+          path="/admin/chapters"
+          element={
+            <AdminAuth>
+              <AddChapters />
+            </AdminAuth>
+          }
+        />
+        <Route
+          path="/admin/questions"
+          element={
+            <AdminAuth>
+              <QuestionTable />
+            </AdminAuth>
+          }
+        />
+        <Route
+          path="/admin/addquestions"
+          element={
+            <AdminAuth>
+              <AddQuestions />
+            </AdminAuth>
+          }
+        />
+        <Route
+          path="/admin/qstatus"
+          element={
+            <AdminAuth>
+              <QuestionStatus />
+            </AdminAuth>
+          }
+        />
       </Routes>
     </BrowserRouter>
   </Provider>,

@@ -83,7 +83,7 @@ const Login = (props) => {
               </div>
             </form>
             <div className="mt-2 text-center">
-              <Link to="/admin/home">Go to Admin</Link>
+              <Link to="/admin/login">Go to Admin</Link>
             </div>
           </div>
         </div>

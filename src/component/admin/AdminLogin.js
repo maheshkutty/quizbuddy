@@ -82,6 +82,9 @@ const AdminLogin = (props) => {
               </LoadingButton>
             </div>
           </form>
+          <div className="mt-2 text-center">
+            <Link to="/home">Go to Home</Link>
+          </div>
         </div>
       </div>
     </div>
