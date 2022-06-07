@@ -101,7 +101,7 @@ function Profile(props) {
               <div className="row">
                 <p className="headertext">Performace</p>
                 <div className="col">
-                  <GrowthChart />
+                  <GrowthChart attemptedQuiz={attemptedQuiz} />
                 </div>
                 <div className="col">
                   <QPieChart />

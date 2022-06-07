@@ -9,9 +9,9 @@ import {
 } from "recharts";
 
 const data = [
-  { name: "Easy", value: 400 },
-  { name: "Medium", value: 300 },
-  { name: "Hard", value: 300 },
+  { name: "Easy", value: 10 },
+  { name: "Medium", value: 20 },
+  { name: "Hard", value: 5 },
 ];
 
 const renderActiveShape = (props) => {
