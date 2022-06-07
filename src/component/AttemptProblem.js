@@ -53,8 +53,8 @@ function AttemptProblem({ userSession }) {
       setResultLoad(true);
       const payload = {
         qid: problemData.qid,
-        ansid: checkAns(),
-        timetaken: 20,
+        aid: [checkAns()],
+        time: 20,
         sid: userSession.sid,
       };
       let response = await qbuddy.post("/student/attemptquestion", payload);

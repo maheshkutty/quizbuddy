@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import QuizTheme from "../theme/appTheme";
 import "../css/questionList.css";
+import { LoadingButton } from "@mui/lab";
 
-function QuestionsList({ setQuestionDetailsData, questionDetailsData, submitQuiz }) {
+function QuestionsList({
+  setQuestionDetailsData,
+  questionDetailsData,
+  submitQuiz,
+  submitLoader
+}) {
+  
+
   const navigateToQ = (i) => {
     let data = questionDetailsData;
     data = data.map((item) => {
@@ -46,18 +54,19 @@ function QuestionsList({ setQuestionDetailsData, questionDetailsData, submitQuiz
       </Box>
       <Box>
         <ThemeProvider theme={QuizTheme}>
-          <Button
+          <LoadingButton
             fullWidth="true"
             size="large"
             variant="contained"
             onClick={submitQuiz}
+            loading={submitLoader}
             sx={{
               backgroundImage:
                 "linear-gradient(to right, #ea5455, #c1426c, #8c3e73, #563966, #2b2e4a)",
             }}
           >
             Submit Quiz
-          </Button>
+          </LoadingButton>
         </ThemeProvider>
       </Box>
     </Box>

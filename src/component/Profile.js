@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
+import { Card, CardContent, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import HeaderHome from "./HeaderHome";
 import "../css/profile.css";
@@ -9,15 +11,27 @@ import Logout from "./Logout";
 import Loader from "./utils/Loader";
 import GrowthChart from "./GrowthChart";
 import QPieChart from "./QPieChart";
+import qbuddy from "../api/qbuddy";
 
 function Profile(props) {
+  const [attemptedQuiz, setAttemptedQuiz] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    // console.log(props.userSession);
-    // console.log(props.profileData);
-    // props.getProfileAction({ email: props.userSession.email });
     if (props.profileData.email == "") {
       props.getProfileAction({ email: props.userSession.email });
     }
+  }, []);
+
+  useEffect(() => {
+    async function showAttemptQuiz() {
+      let response = await qbuddy.post(
+        `/student/attemptedquizs?sid=${props.userSession.sid}`
+      );
+      response = response.data;
+      if (response.status == "success") setAttemptedQuiz(response.res);
+    }
+    showAttemptQuiz();
   }, []);
 
   if (props.profileData.email == "") {
@@ -61,6 +75,26 @@ function Profile(props) {
             <div className="sectionstyle">
               <div className="row">
                 <div className="col headertext">Attempted Quiz</div>
+                <div className="row">
+                  {attemptedQuiz.map((item, i) => (
+                    <div className="col-4 m-2">
+                      <Card
+                        sx={{ cursor: "pointer" }}
+                        onClick={() => navigate(`/quizresult/${item.Aid}`)}
+                      >
+                        <CardContent>
+                          <Typography variant="h5">Quiz {i + 1}</Typography>
+                          <Typography variant="body2">
+                            Date: {item.date_time}
+                          </Typography>
+                          <Typography variant="body2">
+                            Score: {item.score}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="sectionstyle">

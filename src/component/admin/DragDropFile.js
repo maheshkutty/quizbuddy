@@ -26,9 +26,9 @@ function DragAndDropFile(props) {
   const onDrop = useCallback((acceptedFiles) => {
     console.log(props);
     console.log(isDragAccept);
-    acceptedFiles.forEach((file) => {
+    //acceptedFiles.forEach((file) => {
       //console.log(fi)
-      props.processData(file);
+      props.processData(acceptedFiles);
       // const reader = new FileReader();
       // reader.onabort = () => console.log("file reading was aborted");
       // reader.onerror = () => console.log("file reading has failed");
@@ -42,7 +42,7 @@ function DragAndDropFile(props) {
       //   //processData(binaryStr);
       // };
       //reader.readAsArrayBuffer(file);
-    });
+    //});
   }, []);
 
   

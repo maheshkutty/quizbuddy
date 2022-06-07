@@ -25,3 +25,8 @@
     color: white;
     background-color: #5e93ff;
 }
+
+.correctAnswer {
+    color: white;
+    background-color: #5cb85c;
+}

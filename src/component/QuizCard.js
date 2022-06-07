@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import AlarmIcon from "@mui/icons-material/Alarm";
 import { useNavigate } from "react-router-dom";
-
+import Loader from "./utils/Loader";
 import QuizTheme from "../theme/appTheme";
 
 function QuizCard({ difficulty, timeInMins, noQuestions, quiz_id }) {

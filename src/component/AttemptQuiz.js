@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Box } from "@mui/material";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 
 import QuestionDetails from "./QuestionDetails";
@@ -8,9 +8,14 @@ import QuestionsList from "./QuestionList";
 import TimeCounter from "./TimeCounter";
 import { getQuizProblemsAction } from "../actions/QuizAction";
 import Loader from "./utils/Loader";
+import Toast from "./utils/Toast";
+import qbuddy from "../api/qbuddy";
 
 function AttemptQuiz(props) {
   const [questionDetailsData, setQuestionDetailsData] = useState([]);
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const [toastState, setToastState] = useState(false);
+  const navigate = useNavigate();
   let params = useParams();
   useEffect(() => {
     let payload = {
@@ -43,20 +48,34 @@ function AttemptQuiz(props) {
     return aid;
   };
 
-  const submitQuiz = () => {
-    let payload = {
-      sid: props.userSession.sid == "" ? 0 : props.userSession.sid,
-      qid: params.qid,
-      questions: [],
-    };
-    questionDetailsData.forEach((item) => {
-      payload.questions.push({
-        qid: item.qid,
-        aid: getTrueAns(item.Options),
-        time: item.time,
+  const submitQuiz = async () => {
+    try {
+      setSubmitLoader(true);
+      let payload = {
+        st_id: props.userSession.sid == "" ? 0 : props.userSession.sid,
+        quizid: params.qid,
+        questions: [],
+      };
+      questionDetailsData.forEach((item) => {
+        payload.questions.push({
+          qid: item.qid,
+          aid: getTrueAns(item.Options),
+          time: item.time,
+          diff_lvl: item.dificulty_lvl,
+          q_type: "MCQ",
+        });
       });
-    });
-    console.log(payload);
+      let response = await qbuddy.post("/student/submitquiz", payload);
+      response = response.data;
+      if (response.status == "success") {
+        setToastState(true);
+        navigate(`/quizresult/${response.res}`);
+      }
+      setSubmitLoader(false);
+    } catch (err) {
+      console.log(err);
+      setSubmitLoader(false);
+    }
   };
 
   if (questionDetailsData.length == 0) {
@@ -66,6 +85,9 @@ function AttemptQuiz(props) {
   return (
     <div className="container">
       <div className="row">
+        <Toast open={toastState} setOpen={setToastState}>
+          Quiz Submitted successfully
+        </Toast>
         <div className="col">
           <Box
             sx={{
@@ -100,6 +122,7 @@ function AttemptQuiz(props) {
           {questionDetailsData.length == 0 ? null : (
             <QuestionsList
               submitQuiz={submitQuiz}
+              submitLoader={submitLoader}
               setQuestionDetailsData={setQuestionDetailsData}
               questionDetailsData={questionDetailsData}
             />

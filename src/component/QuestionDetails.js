@@ -171,9 +171,9 @@ function QuestionDetails({ questionDetailsData, setQuestionDetailsData }) {
                     <div className="col-5">
                       <h3>Questions {i + 1}</h3>
                     </div>
-                    <div className="col">
+                    {/* <div className="col">
                       <TimeCounter mins="2" />
-                    </div>
+                    </div> */}
                   </div>
                 </Box>
                 <Box sx={{ p: 1.5 }}>

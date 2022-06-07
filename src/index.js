@@ -30,6 +30,7 @@ import HomePage from "./component/HomePage";
 import Aboutus from "./component/Aboutus";
 import AdminLogin from "./component/admin/AdminLogin";
 import AllResult from "./component/AllResult";
+import QuizResult from "./component/QuizResult";
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
@@ -72,6 +73,9 @@ ReactDOM.render(
         <Route path="/attemptquiz" element={<AttemptQuiz />}>
           <Route path=":qid" element={<AttemptQuiz />} />
         </Route>
+        <Route path="/quizresult" element={<QuizResult />}>
+          <Route path=":aid" element={<QuizResult />} />
+        </Route>
         <Route path="/home" element={<HomePage />} />
         <Route path="/aboutus" element={<Aboutus />} />
         <Route
@@ -87,14 +91,6 @@ ReactDOM.render(
           element={
             <RequireAuth>
               <Profile />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/result"
-          element={
-            <RequireAuth>
-              <AllResult />
             </RequireAuth>
           }
         />

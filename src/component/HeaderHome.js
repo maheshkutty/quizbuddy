@@ -51,12 +51,6 @@ const HeaderHome = ({ children }) => {
               >
                 Profile
               </Nav.Link>
-              <Nav.Link
-                eventKey="/result"
-                id={activeNav == "/result" ? "active" : "headermenu"}
-              >
-                Result
-              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
