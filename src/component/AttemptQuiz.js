@@ -96,7 +96,7 @@ function AttemptQuiz(props) {
             }}
           >
             {questionDetailsData.length == 0 ? null : (
-              <TimeCounter mins={props.quizData.quizList.timeInMins} />
+              <TimeCounter mins={props.quizData.quizList.timeInMins} submitQuiz={submitQuiz} />
             )}
           </Box>
           <div className="col">

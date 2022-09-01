@@ -8,7 +8,7 @@ export const getQuizAction = (payload) => async (dispatch, getStates) => {
       status: "success",
       msg: "Successfuly Quiz Created",
       quiz_id: 5,
-      timeInMins: 30,
+      timeInMins: 20,
       noQuestions: 20,
       difficulty: "Medium",
     };
